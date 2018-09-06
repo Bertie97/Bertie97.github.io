@@ -1,0 +1,11 @@
+@import "main.css";
+
+.block {
+    padding: 5%;
+    margin: 5%;
+    width: 80%;
+    height: 10rem;
+    /* border: solid 1px #888; */
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px #AAA;
+}

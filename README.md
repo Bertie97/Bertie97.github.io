@@ -1,2 +1,8 @@
 # Bertie97.github.io
-My personal webpage
+这是我的个人网站，如果你喜欢也可以用其作为模版构建自己的网站。
+
+构建方法只需更改`CONTENTS`目录下的内容即可。
+
+> **注：**所有规定文件名的文档均可采用任何扩展名，其他必须使用*.md的`markdown`文件。建议所有文本文档使用md格式。
+
+`CONTENTS`目录包含

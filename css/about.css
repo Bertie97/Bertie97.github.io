@@ -1,0 +1,14 @@
+@import "main.css";
+
+#main {
+    text-align: center;
+    color: cornflowerblue;
+}
+
+p {
+    color: #666;
+}
+
+h2 {
+    color: cornflowerblue;
+}

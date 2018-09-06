@@ -1,0 +1,88 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下午练习</title>
+    <script type="application/javascript" src="jquery-3.3.1.min.js"></script>
+    <script>
+
+        $(function () {
+            $("#a").click(function () {
+                $("img").fadeIn(2000,function () {
+                    alert("图片淡入了")
+                });
+            })
+            $("#b").click(function () {
+                $("img").fadeOut(2000,function () {
+                    alert("图片淡出了")
+                })
+            })
+            $("#c").click(function () {
+                $("img").slideUp(3000,function () {
+                    alert("图片收起来了，隐藏")
+                })
+            })
+            $("#d").click(function () {
+                $("img").slideDown(3000,function () {
+                    alert("图片放下来了，显示")
+                })
+            })
+            $("#e").click(function () {
+                $("img").slideToggle(3000,function () {
+                    alert("显示/隐藏切换了")
+                })
+            })
+            $("#f").click(function () {
+                $("img").fadeToggle(3000,function () {
+                    alert("淡出淡入切换")
+                })
+            })
+            $("#g").click(function () {
+                $("img").animate({
+                    width:"120px",  /*图片的宽和高*/
+                    height:"160px",
+                    opacity:0.5 /*透明度*/
+
+                },1000,function () {
+                    alert("动画结束了")
+                })
+            })
+            $("#q").click(function () {
+                $("img").hide(2000,function () {
+                    alert("图片隐藏了")
+                });       /*图片显示、隐藏的效果  和  淡入，淡出的效果不一样*/
+            })
+            $("#w").click(function () {
+                $("img").show(2000,function () {
+                    alert("图片显示了")
+                })
+            })
+            $("#x").click(function () {
+                $("#move").animate({left:'-50px'},"slow")
+            })
+            $("#y").click(function () {
+                $("#move").animate({left:'+50px'},"slow")
+            })
+
+        })
+    </script>
+</head>
+<body>
+    <button id="a">淡入</button>
+    <button id="b">淡出</button>
+    <button id="c">更改大小隐藏</button>
+    <button id="d">更改大小显示</button>
+    <button id="e">更改大小显示隐藏切换</button>
+    <button id="f">淡出淡入切换</button>
+    <button id="g">自定义动画</button>
+    <button id="q">隐藏</button>
+    <button id="w">显示</button>
+    <button id="x">左移</button>
+    <button id="y">右移</button>
+    <center>
+    <img src="../img/icon-web.png" height="339" width="510"/>
+    <img src="../img/icon-web.png" height="339" width="510" id="move"
+    style="position:absolute; left: 10px"/>
+    </center>
+</body>
+</html>
