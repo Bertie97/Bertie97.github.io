@@ -8,18 +8,20 @@ from PIL import Image
 
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
+lite = lambda f: os.extsep.join(f.split(os.extsep)[:-1]) + \
+                 '_lite' + os.extsep + f.split(os.extsep)[-1]
+
 def minifyPics(dir):
     for file in os.listdir(dir):
         file = os.path.join(dir, file)
         if os.path.isdir(file): minifyPics(file)
-        nameparts = file.split(os.extsep)
-        if nameparts[-1].lower() not in imgext: continue
+        if file.split(os.extsep)[-1].lower() not in imgext: continue
         if '_lite' in file: continue
-        newfilename = os.extsep.join(nameparts[:-1]) + '_lite' + os.extsep + nameparts[-1]
+        newfilename = lite(file)
         if os.path.exists(newfilename): continue
         image = Image.open(file)
         w, h = image.size
-        w, h = w * 480 // h, 480
+        w, h = w * 300 // h, 300
         image = image.resize((w, h))
         image.save(open(newfilename, 'w'))
 minifyPics('CONTENTS')
@@ -109,7 +111,7 @@ footer = '<div id="footer">© BFG Bertie 2018</div>'
 html = head(title=MYNAME+"的主页", js=["js/jquery-3.3.1.min.js", "js/main.js"], css=["css/main.css"])
 html += '<body>\n'
 html += header
-html += '<img id="mainpic" src="./img/MAIN.JPG" width="100%" height="100%"/>\n'
+html += '<img id="mainpic" src="' + os.path.join('CONTENTS', 'MAIN_lite.JPG') + '" width="100%" height="100%"/>\n'
 html += '''
 <div width="100%">
     <center><h1 style="color:cornflowerblue;">板块</h1></center>
@@ -131,7 +133,7 @@ for key in boards:
                 </div>
             </td>
     '''.format(height=tk.Tk().winfo_screenheight() * 2 // 3,
-               name=key, content=boards[key]['text'], icon=boards[key]['icon'])
+               name=key, content=boards[key]['text'], icon=lite(boards[key]['icon']))
 
 html += about + '''
         </tr>
@@ -250,9 +252,7 @@ for f in gallery:
                     </a>
                 </center>
             </td>
-    '''.format(path=f, con=constraint,
-               litefile=os.extsep.join(f.split(os.extsep)[:-1]) +
-                        '_lite' + os.extsep + f.split(os.extsep)[-1])
+    '''.format(path=f, con=constraint, litefile=lite(f))
     if i % col == col - 1: html += '\t\t</tr>\n\t\t<tr>'
     i += 1
 html += '''
