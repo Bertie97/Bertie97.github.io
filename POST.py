@@ -150,7 +150,7 @@ html += '''
 </center>
 '''.format(name=MYNAME)
 html += '</body>\n</html>'
-with open('Index.html', 'w') as fp: fp.write(html)
+with open('index.html', 'w') as fp: fp.write(html)
 
 # build about.html
 html = head(title=MYNAME+"主页的介绍", js=["js/main.js"], css=["css/about.css"])
