@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>resolutionData</key>
+	<dict>
+		<key>sheetClusters</key>
+		<dict>
+			<key>序.md</key>
+			<dict>
+				<key>lastModification</key>
+				<real>555012440.16636598</real>
+				<key>version</key>
+				<dict>
+					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+					<integer>9</integer>
+				</dict>
+			</dict>
+			<key>第一章 停电了.md</key>
+			<dict>
+				<key>lastModification</key>
+				<real>555012820.80059803</real>
+				<key>version</key>
+				<dict>
+					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+					<integer>11</integer>
+				</dict>
+			</dict>
+		</dict>
+		<key>userIconName</key>
+		<real>554886138.24579799</real>
+	</dict>
+	<key>sheetClusters</key>
+	<array>
+		<array>
+			<string>序.md</string>
+		</array>
+		<array>
+			<string>第一章 停电了.md</string>
+		</array>
+	</array>
+	<key>storeFormatVersion</key>
+	<integer>1</integer>
+	<key>userIconName</key>
+	<string>Atomic</string>
+	<key>versioning</key>
+	<dict>
+		<key>sheetClusters</key>
+		<dict>
+			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+			<integer>12</integer>
+		</dict>
+		<key>userIconName</key>
+		<dict>
+			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+			<integer>30</integer>
+		</dict>
+	</dict>
+</dict>
+</plist>

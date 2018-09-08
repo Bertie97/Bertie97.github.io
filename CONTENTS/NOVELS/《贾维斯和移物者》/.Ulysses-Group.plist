@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>resolutionData</key>
+	<dict>
+		<key>userIconName</key>
+		<real>536663352.04726499</real>
+	</dict>
+	<key>storeFormatVersion</key>
+	<integer>1</integer>
+	<key>userIconName</key>
+	<string>Rocket</string>
+	<key>versioning</key>
+	<dict>
+		<key>userIconName</key>
+		<dict>
+			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+			<integer>15</integer>
+		</dict>
+	</dict>
+</dict>
+</plist>

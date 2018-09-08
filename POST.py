@@ -12,47 +12,6 @@ imgext = ['jpg', 'jpeg', 'bmp', 'png']
 lite = lambda f: os.extsep.join(f.split(os.extsep)[:-1]) + \
                  '_lite' + os.extsep + f.split(os.extsep)[-1]
 
-def minifyPics(dir):
-    for file in os.listdir(dir):
-        file = os.path.join(dir, file)
-        if os.path.isdir(file): minifyPics(file)
-        if file.split(os.extsep)[-1].lower() not in imgext: continue
-        if '_lite' in file: continue
-        newfilename = lite(file)
-        if os.path.exists(newfilename): continue
-        image = Image.open(file)
-        w, h = image.size
-        w, h = w * 300 // h, 300
-        image = image.resize((w, h))
-        image.save(open(newfilename, 'wb'))
-minifyPics('CONTENTS')
-
-Fconfig = os.path.join('CONTENTS', 'CONFIG.md')
-with open(Fconfig) as fp:
-    lines = [l.strip() for l in fp.readlines()]
-    validLines = [l for l in lines if l and not l.startswith('#')]
-    locals().update({l.split('=')[0].strip(): eval('='.join(l.split('=')[1:]))
-                     for l in validLines})
-
-def head(title='', js=[], css=[], other=''):
-    s = '''
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>{title}</title>
-'''.format(title=title)
-    for f in js: s += '<script type="text/javascript" src="' + f + '"></script>\n'
-    for f in css: s += '<link type="text/css" rel="stylesheet" href="' + f + '"/>\n'
-    s += other
-    s += '</head>\n'
-    return s
-
-Dsample = 'SAMPLE'
-for folder in ['js', 'css', 'res', 'img']:
-    if not os.path.exists(folder):
-        shutil.copytree(os.path.join(Dsample, folder), folder)
-
 Dabout = os.path.join('CONTENTS', 'ABOUT')
 intro = ''; sections = []
 for file in os.listdir(Dabout):
@@ -90,8 +49,65 @@ for file in os.listdir(Dabout):
             continue
         info.append(line)
     sections.append({'foldername': fname, 'name': name, 'icon': icon, 'title':title,
-                   'tag': tag, 'text': '\n'.join(info), 'theme': theme})
+                     'tag': tag, 'text': '\n'.join(info), 'theme': theme})
 sections = sorted(sections, key=lambda x: x['tag'])
+themes = {sec['foldername']: sec['theme'] for sec in sections}
+
+def minifyPics(dir, size=300):
+    for file in os.listdir(dir):
+        parts = file.split(os.extsep)
+        name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
+        file = os.path.join(dir, file)
+        if os.path.isdir(file):
+            if themes.get(os.path.basename(file), '').upper() =='BLOG':
+                minifyPics(file, size=750)
+            else: minifyPics(file, size=size)
+        if extension not in imgext: continue
+        if '_lite' in file:
+            lw, lh = Image.open(file).size
+            w, h = Image.open(file.replace('_lite', '')).size
+            if lw/lh - w/h < eps and lh == size: continue
+            newfilename = file
+            file = file.replace('_lite', '')
+        else:
+            newfilename = lite(file)
+            if os.path.exists(newfilename): continue
+        image = Image.open(file)
+        w, h = image.size
+        try:
+            int(name)
+            csize = 900
+        except: csize = size
+        w, h = w * csize // h, csize
+        image = image.resize((w, h))
+        image.save(open(newfilename, 'wb'))
+minifyPics('CONTENTS')
+
+Fconfig = os.path.join('CONTENTS', 'CONFIG.md')
+with open(Fconfig) as fp:
+    lines = [l.strip() for l in fp.readlines()]
+    validLines = [l for l in lines if l and not l.startswith('#')]
+    locals().update({l.split('=')[0].strip(): eval('='.join(l.split('=')[1:]))
+                     for l in validLines})
+
+def head(title='', js=[], css=[], other=''):
+    s = '''
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+'''.format(title=title)
+    for f in js: s += '<script type="text/javascript" src="' + f + '"></script>\n'
+    for f in css: s += '<link type="text/css" rel="stylesheet" href="' + f + '"/>\n'
+    s += other
+    s += '</head>\n'
+    return s
+
+Dsample = 'SAMPLE'
+for folder in ['js', 'css', 'res', 'img']:
+    if not os.path.exists(folder):
+        shutil.copytree(os.path.join(Dsample, folder), folder)
 
 header = '''
 <div id="header" class="header">
@@ -398,7 +414,7 @@ def buildMDPage(item, dir):
         tmp = tmp[rindx:]
         start += rindx
     md = item['content']
-    for l, r, s in change: md = md[:l] + s + md[r:]
+    for l, r, s in change[::-1]: md = md[:l] + s + md[r:]
     html += markdown.markdown(md)
     html += '\t</div>\n'
     html += '<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>\n'
