@@ -10,4 +10,8 @@ $(function(){
             $('#arrowUP').fadeIn();
         }
     })
+    $('#arrowUP').click(function(){
+        $('html, body').animate({scrollTop: $('html, body').height() - $(window).height()}, 300);
+        return false;
+    })
 })

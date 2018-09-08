@@ -1,0 +1,79 @@
+@import "main.css";
+
+#main {
+    color: cornflowerblue;
+}
+
+hr {
+    margin: 0;
+    width: 100%;
+}
+
+h2 {
+    color: cornflowerblue;
+}
+
+h3 {
+    margin: 0.4rem;
+    height: 1rem;
+    line-height: 1.2rem;
+}
+
+.blogIcon {
+    width:4rem;
+    height:0;
+    float:left;
+    margin: 0.4rem;
+    border-radius: 0.4rem;
+    padding-bottom: 4rem;
+    overflow:hidden;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    background-size:cover;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#timestamp {
+    font-size: 0.7rem;
+    font-weight: normal;
+    color:#888;
+    float:right
+}
+
+#goToTop {
+    height: 2rem;
+    position: fixed;
+    bottom: 4rem;
+    background-color: lightgrey;
+    border-radius: 0.2rem;
+    margin-left: 22rem;
+    opacity: 0.5;
+}
+
+#goToTop:hover {
+    opacity: 0.8;
+}
+
+#goToTop:active {
+    opacity: 1;
+}
+
+p#intro {
+    height: 2.7rem;
+    margin: 0.2rem;
+    font-size: 0.7rem;
+    line-height: 0.9rem;
+    color: #666;
+    overflow: hidden;
+    width: 32rem;
+}
+
+p>img {
+    width: 50%;
+}
