@@ -297,7 +297,7 @@ var currentPage = 1;//当前页数
  * 分页部分是从真实数据行开始，因而存在加减某个常数，以确定真正的记录数
  * 纯js分页实质是数据行全部加载，通过是否显示属性完成分页功能
  **/
-function go2Page(pno, psize){
+function setPage(pno, psize) {
     var itable = document.getElementById("gallery");
     var num = itable.rows.length;//表格所有行数(所有记录数)
     var totalPage = 0;//总页数
@@ -328,6 +328,10 @@ function go2Page(pno, psize){
         document.getElementById("page" + i).classList.remove("active");
     }
     document.getElementById("page" + currentPage).className = "active";
+}
+
+function go2Page(pno, psize) {
+    setPage(pno, psize);
     window.location.href="#GLY";
 }
 

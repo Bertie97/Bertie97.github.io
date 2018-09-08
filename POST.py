@@ -382,7 +382,7 @@ def buildMDPage(item, dir):
     html = head(title=item['title'], css=['../css/blog.css'], js=['../' + jquery, '../js/blog.js'])
     html += '<body>\n' + header.replace('./', '../')
     html += '\t<div style="width:40rem; margin:auto">\n'
-    insert = []
+    change = []
     tmp = item['content']
     start = 0
     while True:
@@ -392,13 +392,13 @@ def buildMDPage(item, dir):
         rindx = tmp.find(')', lindx)
         path = tmp[lindx:rindx]
         if not os.path.isabs(path) and not os.path.exists(path) and '://' not in path:
-            insert.append(lindx + start)
+            path = os.path.join(os.path.pardir, dir, '') + path
+        path = lite(path)
+        change.append((lindx + start, rindx + start, path))
         tmp = tmp[rindx:]
         start += rindx
-    parts = []; s = 0
-    for i in insert: parts.append(item['content'][s:i]); s = i
-    parts.append(item['content'][s:])
-    md = (os.path.join(os.path.pardir, dir, '')).join(parts)
+    md = item['content']
+    for l, r, s in change: md = md[:l] + s + md[r:]
     html += markdown.markdown(md)
     html += '\t</div>\n'
     html += '<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>\n'
