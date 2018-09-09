@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>绑匪</title>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/blog.js"></script>
+<link type="text/css" rel="stylesheet" href="../css/blog.css"/>
+</head>
+<body onkeydown="return onKey(event)">
+
+        <script type="text/javascript">
+        function onKey(e)
+        {
+            var c = window.event ? event.keyCode : event.which;
+            switch(c) {
+                case 8:  document.getElementById('back').click(); break;
+                case 13: document.getElementById('list').click(); break;
+                case 37: document.getElementById('prev').click(); break;
+                case 39: document.getElementById('next').click(); break;
+            }
+        }
+        </script>
+        
+<div id="header" class="header">
+    <div style="float:right; margin-top: 10px">
+        <table>
+            <tr>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../index.html">首页</a>
+                </td>
+<td style="border: none; padding: 0;">
+                     <a class="navitem" href="../程序.html">程序</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../摄影.html">摄影</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../食谱.html">食谱</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../小说.html">小说</a>
+                 </td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../about.html">关于</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="title">
+        <h1 class="title"><b>Bertie</b> 的网页</h1>
+        <hr style="width:100%; margin:0">
+    </div>
+</div>
+<div class="header" style="border:none">
+    <div id="title">
+        <h1 class="title"><span style="color:' + bkcolor + '"><b>Bertie</b> 的主页</span></h1>
+        <div style="width:100%; height:1rem"></div>
+    </div>
+</div>
+	<div style="width:40rem; margin:2rem auto; padding:6rem;    box-shadow: 2px 2px 4px #888; border-radius:0.4rem;" id="page">
+
+    <ul class="pagination">
+        <li><a href="短篇.html" id="back">⬿</a></li>
+    </ul>
+    <h1>绑匪</h1>
+<p>又一个绑匪，他已经是个成功的绑匪了：他绑架了别人一次并且没被抓住，这可比第一次出手就被送进监狱的强多了。<br>这天绑匪遇到一个老人突发奇想，他要绑架一个老人</p>
+        <center>
+            <ul class="pagination">
+        <li><a href="1533399257_605458.html" id="prev">«</a></li>
+<li><a href="短篇.html" id="list">≡</a></li>
+<li><a href="1535362088_689474.html" id="next">»</a></li>
+
+            </ul>
+        </center>
+        	</div>
+<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>
+<div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div></body>
+</html>

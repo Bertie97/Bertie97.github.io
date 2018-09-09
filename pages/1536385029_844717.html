@@ -8,15 +8,40 @@
 <script type="text/javascript" src="../js/blog.js"></script>
 <link type="text/css" rel="stylesheet" href="../css/blog.css"/>
 </head>
-<body>
+<body onkeydown="return onKey(event)">
 
+        <script type="text/javascript">
+        function onKey(e)
+        {
+            var c = window.event ? event.keyCode : event.which;
+            switch(c) {
+                case 8:  document.getElementById('back').click(); break;
+                case 13: document.getElementById('list').click(); break;
+                case 37: document.getElementById('prev').click(); break;
+                case 39: document.getElementById('next').click(); break;
+            }
+        }
+        </script>
+        
 <div id="header" class="header">
     <div style="float:right; margin-top: 10px">
         <table>
             <tr>
-                <td><a class="navitem" href="../index.html">首页</a></td>
-<td><a class="navitem" href="../程序.html">程序</a></td><td><a class="navitem" href="../摄影.html">摄影</a></td><td><a class="navitem" href="../食谱.html">食谱</a></td><td><a class="navitem" href="../小说.html">小说</a></td>
-                <td><a class="navitem" href="../about.html">关于</a></td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../index.html">首页</a>
+                </td>
+<td style="border: none; padding: 0;">
+                     <a class="navitem" href="../程序.html">程序</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../摄影.html">摄影</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../食谱.html">食谱</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../小说.html">小说</a>
+                 </td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../about.html">关于</a>
+                </td>
             </tr>
         </table>
     </div>
@@ -27,16 +52,29 @@
 </div>
 <div class="header" style="border:none">
     <div id="title">
-        <h1 class="title"><span style="color:white"><b>Bertie</b> 的主页</span></h1>
+        <h1 class="title"><span style="color:' + bkcolor + '"><b>Bertie</b> 的主页</span></h1>
         <div style="width:100%; height:1rem"></div>
     </div>
 </div>
-	<div style="width:40rem; margin:auto">
-<h1>馅饼</h1>
+	<div style="width:40rem; margin:2rem auto; padding:6rem;    box-shadow: 2px 2px 4px #888; border-radius:0.4rem;" id="page">
+
+    <ul class="pagination">
+        <li><a href="../食谱.html" id="back">⬿</a></li>
+    </ul>
+    <h1>馅饼</h1>
 <p>馅饼是很好吃的东西</p>
-<p><img alt="through_the_days_by_yuumei-d8oxkp1" src="../CONTENTS/RECIPES/馅饼/through_the_days_by_yuumei-d8oxkp1_lite.jpg" /></p>
-<p><img alt="ER" src="../CONTENTS/RECIPES/馅饼/timg-7_lite.jpeg" /></p>
-<p>真的很好吃哦！</p>	</div>
+<p><img alt="through_the_days_by_yuumei-d8oxkp1" src="../CONTENTS/RECIPES/馅饼/through_the_days_by_yuumei-d8oxkp1.jpg" /></p>
+<p><img alt="ER" src="../CONTENTS/RECIPES/馅饼/timg-7.jpeg" /></p>
+<p>真的很好吃哦！</p>
+        <center>
+            <ul class="pagination">
+        <li><a href="1536385121_557496.html" id="prev">«</a></li>
+<li><a href="食谱.html" id="list">≡</a></li>
+<li><a href="1536385022_5283737.html" id="next">»</a></li>
+
+            </ul>
+        </center>
+        	</div>
 <center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>
-<div id="footer">© BFG Bertie 2018</div></body>
+<div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div></body>
 </html>

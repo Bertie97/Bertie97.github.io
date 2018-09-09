@@ -9,8 +9,23 @@ from PIL import Image
 eps = 0.0001
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
-lite = lambda f: os.extsep.join(f.split(os.extsep)[:-1]) + \
-                 '_lite' + os.extsep + f.split(os.extsep)[-1]
+def lite(f):
+    res = os.extsep.join(f.split(os.extsep)[:-1]) + \
+          '_lite' + os.extsep + f.split(os.extsep)[-1]
+    if os.path.exists(res): return res
+    return f
+
+def pagename(item):
+    if not isinstance(item, dict) or 'timestamp' not in item: return ''
+    return str(item['timestamp']).replace('.', '_') + '.html'
+
+Dsample = 'SAMPLE'
+for folder in ['js', 'css', 'res', 'img']:
+    # if os.path.exists(folder): shutil.rmtree(folder) # TODO: DELETE
+    if not os.path.exists(folder):
+        shutil.copytree(os.path.join(Dsample, folder), folder)
+for file in os.listdir('pages'):
+    os.remove(os.path.join('pages', file))
 
 Dabout = os.path.join('CONTENTS', 'ABOUT')
 intro = ''; sections = []
@@ -104,23 +119,24 @@ def head(title='', js=[], css=[], other=''):
     s += '</head>\n'
     return s
 
-Dsample = 'SAMPLE'
-for folder in ['js', 'css', 'res', 'img']:
-    if not os.path.exists(folder):
-        shutil.copytree(os.path.join(Dsample, folder), folder)
-
 header = '''
 <div id="header" class="header">
     <div style="float:right; margin-top: 10px">
         <table>
             <tr>
-                <td><a class="navitem" href="./index.html">首页</a></td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="./index.html">首页</a>
+                </td>
 '''
 for sec in sections:
-    header += '<td><a class="navitem" href="./{name}.html">{name}</a></td>'.format(name=sec['name'])
+    header += '''<td style="border: none; padding: 0;">
+                     <a class="navitem" href="./{name}.html">{name}</a>
+                 </td>'''.format(name=sec['name'])
 
 header += '''
-                <td><a class="navitem" href="./about.html">关于</a></td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="./about.html">关于</a>
+                </td>
             </tr>
         </table>
     </div>
@@ -131,12 +147,13 @@ header += '''
 </div>
 <div class="header" style="border:none">
     <div id="title">
-        <h1 class="title"><span style="color:white"><b>{name}</b> 的主页</span></h1>
+        <h1 class="title"><span style="color:' + bkcolor + '"><b>{name}</b> 的主页</span></h1>
         <div style="width:100%; height:1rem"></div>
     </div>
 </div>
 '''.format(name=MYNAME)
-footer = '<div id="footer">© BFG Bertie 2018</div>'
+footer = '<div id="footer"><a href="{}" style="text-decoration:none; color:white">\
+© BFG Bertie 2018</a></div>'.format(giturl)
 jquery = "js/jquery-3.3.1.min.js"
 
 
@@ -224,7 +241,20 @@ def pageButtons(npages, nrows):
 
 def buildGALLERY(sec):
     html = head(title=sec['title'].format(MYNAME), css=["css/photos.css"])
-    html += '<body onLoad="setPage(1,' + str(row) + ');">\n' + header
+    html += '<body onLoad="setPage(1,' + str(row) + ');" onkeydown="return onKey(event)">\n'
+    html += '''
+    <script type="text/javascript">
+    function onKey(e)
+    {
+        var c = window.event ? event.keyCode : event.which;
+        switch(c) {
+            case 37: document.getElementById('page«').click(); break;
+            case 39: document.getElementById('page»').click(); break;
+        }
+    }
+    </script>
+    '''
+    html += header
     banner, gallery = [], []
     Dphotos = os.path.join('CONTENTS', sec['foldername'])
     for file in os.listdir(Dphotos):
@@ -360,27 +390,34 @@ def buildBLOG(sec):
         <table id="blogList">
     '''.format(title=sec['title'].format(MYNAME))
     for i, item in enumerate(items):
-        buildMDPage(item, Dblogs)
+        if not item['content'].strip().startswith('#'):
+            item['content'] = '#' + item['title'] + '\n' + item['content']
+        buildMDPage(item, os.path.join(os.path.pardir, sec['name'] + '.html'), Dblogs,
+                    prevurl=pagename(items[i-1] if i > 0 else None),
+                    nexturl=pagename(items[i+1] if i < len(items) - 1 else None),
+                    prturl=sec['name'] + '.html')
         info = time.localtime(item['timestamp'])
         Y, M, D = info.tm_year, info.tm_mon, info.tm_mday
         h, m, s = info.tm_hour, info.tm_min, info.tm_sec
         html += '''
             <tr>
-                <td style="width:100%">
+                <td style="width:100%; border: none; padding: 0;">
                     <a href="{href}">
                         {hr}
-                        <img style="background-image: url('{icon}')" class="blogIcon"/>
-                        <h3>
-                            {title}
-                            <span id="timestamp">
-                                更新时间：{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
-                            </span>
-                        </h3>
-                        <p id="intro">{subtitle}</p>
+                        <div class="tableitem">
+                            <img style="background-image: url('{icon}')" class="blogIcon"/>
+                            <h3>
+                                {title}
+                                <span id="timestamp">
+                                    更新时间：{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
+                                </span>
+                            </h3>
+                            <p id="intro">{subtitle}</p>
+                        </div>
                     </a>
                 </td>
             </tr>
-        '''.format(href=os.path.join('pages', str(item['timestamp']).replace('.', '_') + '.html'),
+        '''.format(href=os.path.join('pages', pagename(item)),
                    hr = '<hr>' if i % entry != 0 else '', icon=lite(item['icon']),
                    title = item['title'], Y=Y, M=M, D=D, h=h, m=m, s=s,
                    subtitle = item['subtitle'])
@@ -394,10 +431,175 @@ def buildBLOG(sec):
     html += '</body>\n</html>'
     with open(sec['name'] + '.html', 'w') as fp: fp.write(html)
 
-def buildMDPage(item, dir):
+
+def buildBOOK(sec):
+    html = head(title=sec['title'].format(MYNAME), css=["css/book.css"], js=["js/book.js"])
+    html += '<body onLoad="go2Page(1,' + str(entry) + ');">\n' + header
+    books = []
+    Dbooks = os.path.join('CONTENTS', sec['foldername'])
+    DefaultIcon = None
+    for dir in os.listdir(Dbooks):
+        parts = dir.split(os.extsep)
+        name, foldername = os.extsep.join(parts[:-1]), parts[-1]
+        dir = os.path.join(Dbooks, dir)
+        if name.upper() == 'DEFAULT' and extension in imgext:
+            DefaultIcon = dir; continue
+        if not os.path.isdir(dir): continue
+        newbook = {'name': foldername, 'contents': [], 'intro': '', 'icon': None}
+        ordered, unordered = [], []
+        maxtimestamp = 0
+        newest = None
+        for file in os.listdir(dir):
+            parts = file.split(os.extsep)
+            name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
+            file = os.path.join(dir, file)
+            if name.upper() == 'ICON' and extension in imgext:
+                newbook['icon'] = lite(file); continue
+            if extension != 'md': continue
+            if name.lower().startswith('intro') or name.endswith('介绍'):
+                with open(file) as fp: newbook['intro'] = fp.read()
+                continue
+            with open(file) as fp:
+                chap = {'title': name, 'content': fp.read(), 'timestamp': os.stat(file).st_mtime}
+            res = re.findall('[0-9]+', changeChineseNumToArab(name.split('_')[0]))
+            if len(res) == 1: chap['chapter'] = res[0]; ordered.append(chap)
+            else: unordered.append(chap)
+            if chap['timestamp'] > maxtimestamp:
+                maxtimestamp = chap['timestamp']
+                newest = name
+        ordered.sort(key=lambda c: c['chapter'])
+        unordered.sort(key=lambda c: c['timestamp'])
+        newbook['contents'] = unordered + ordered
+        newbook['timestamp'] = maxtimestamp
+        newbook['newest'] = newest
+        if not newbook['intro'] and newbook['contents']:
+            newbook['intro'] = newbook['contents'][0]['content'][:800]
+        books.append(newbook)
+    for book in books:
+        if book['icon'] == None: book['icon'] = DefaultIcon
+    books.sort(key=lambda x: -x['timestamp'])
+    html += '''
+    <div style="width:40rem; margin:auto">
+        <center>
+            <h1 id="main">{title}</h1>
+            <hr style="background-image: url(res/hhr.png)">
+        </center>
+        <table id="blogList">
+    '''.format(title=sec['title'].format(MYNAME))
+    for i, book in enumerate(books):
+        info = time.localtime(book['timestamp'])
+        Y, M, D = info.tm_year, info.tm_mon, info.tm_mday
+        h, m, s = info.tm_hour, info.tm_min, info.tm_sec
+        html += '''
+            <tr>
+                <td style="width:100%">
+                    <div class='row'>
+                        <a href="{href}">
+                            <img style="background-image: url('{icon}')" class="blogIcon"/>
+                            <h3>
+                                {title}
+                                <span id="timestamp">
+                                    更新时间：{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
+                                </span>
+                            </h3>
+                            <p id="intro">{subtitle}</p>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        '''.format(href=os.path.join('pages', book['name'] + '.html'),
+                   hr = '<hr>' if i % entry != 0 else '', icon=book['icon'],
+                   title = book['name'], Y=Y, M=M, D=D, h=h, m=m, s=s,
+                   subtitle = book['intro'])
+    html += '\t\t\t</table>\n'
+    numpages = len(books) / entry
+    if numpages > int(numpages) + eps: numpages += 1
+    numpages = int(numpages)
+    if numpages > 1: html += pageButtons(numpages, entry)
+    html += '\t\t</div>\n'
+    html += footer
+    html += '</body>\n</html>'
+    with open(sec['name'] + '.html', 'w') as fp: fp.write(html)
+    # build the subpages
+    for book in books:
+        tinfo = time.localtime(book['timestamp'])
+        Y, M, D = tinfo.tm_year, tinfo.tm_mon, tinfo.tm_mday
+        h, m, s = tinfo.tm_hour, tinfo.tm_min, tinfo.tm_sec
+        html = head(title=MYNAME + '的' + book['name'],
+                    css=['../css/CHlist.css'], js=['../' + jquery, '../js/book.js'])
+        html += '<body>\n' + header.replace('"./', '"../')
+        html += '''
+        <div style="width:40rem; margin:auto">
+            <ul class="pagination" style="float:left; margin:0.8rem; border-radius:0.1rem">
+                <li><a href="''' + os.path.join(os.path.pardir, sec['name']) + '''.html">⬿</a></li>
+            </ul>
+            <ul class="pagination" style="float:right; margin: 0.8rem">
+                <li><a href="javascript:void(0)" style="color:''' + bkcolor + '''">⬿</a></li>
+            </ul>
+            <center><h1 id="main">{title}</h1></center>
+            <div class='row'>
+                <img style="background-image: url('{icon}')" class="mainIcon"/>
+                <span id="timestamp" style="float:inherit">
+                    最后更新：{newest}<br>{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
+                </span>
+                <a href="javascript:void(0)" style="text-decoration:none"><p id="intro">{intro}</p></a>
+            </div>
+            <div class='pod'>
+                <center><h3>章节列表</h3></center>
+                <table style="table-layout:fixed">
+        '''.format(title=book['name'], icon=os.path.join(os.path.pardir, book['icon']),
+                   intro=book['intro'], newest=book['newest'], Y=Y, M=M, D=D, h=h, m=m, s=s)
+        for i, chap in enumerate(book['contents']):
+            if not chap['content'].strip().startswith('#'):
+                chap['content'] = '#' + chap['title'] + '\n' + chap['content']
+            buildMDPage(chap, book['name'] + '.html', Dbooks,
+                        prevurl=pagename(book['contents'][i-1] if i > 0 else None),
+                        nexturl=pagename(book['contents'][i+1] if i < len(book['contents']) - 1 else None),
+                        prturl=book['name'] + '.html')
+            if i % ccol == 0: html += '\t\t\t\t\t<tr>\n'
+            html += '''
+                        <td>
+                            <center><a href="{link}" class="chap">{title}</a></center>
+                        </td>
+            '''.format(title=chap['title'], link=pagename(chap))
+            if i % ccol == ccol - 1: html += '\t\t\t\t\t</tr>\n'
+        html += '\t\t\t\t</table>\n\t\t\t</div>\t\t</div>\n'
+        html += footer
+        html += '''
+        <div id='cover'></div>
+        <div id="popout"><p style="margin:2rem">{}</p></div>
+        <ul class="pagination" style="position:absolute; top:25%; left:50%;
+                                      margin-left:17.4rem; z-index:5">
+            <li><a href = "javascript:void(0)" id='closepop'>×</a></li>
+        </ul>
+        '''.format(book['intro'])
+        html += '</body>\n</html>'
+        with open(os.path.join('pages', book['name'] + '.html'), 'w') as fp: fp.write(html)
+
+
+def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
     html = head(title=item['title'], css=['../css/blog.css'], js=['../' + jquery, '../js/blog.js'])
-    html += '<body>\n' + header.replace('./', '../')
-    html += '\t<div style="width:40rem; margin:auto">\n'
+    # html += '<body>\n' + header.replace('./', '../')
+    shiftable = prevurl or nexturl or prturl
+    html += '<body' + (' onkeydown="return onKey(event)"' if shiftable else '') + '>\n'
+    if shiftable:
+        html += '''
+        <script type="text/javascript">
+        function onKey(e)
+        {
+            var c = window.event ? event.keyCode : event.which;
+            switch(c) {
+                case 8:  document.getElementById('back').click(); break;
+                case 13: document.getElementById('list').click(); break;
+                case 37: document.getElementById('prev').click(); break;
+                case 39: document.getElementById('next').click(); break;
+            }
+        }
+        </script>
+        '''
+    html += header.replace('./', '../')
+    html += '\t<div style="width:40rem; margin:2rem auto; padding:6rem;\
+    box-shadow: 2px 2px 4px #888; border-radius:0.4rem;" id="page">\n'
     change = []
     tmp = item['content']
     start = 0
@@ -415,13 +617,110 @@ def buildMDPage(item, dir):
         start += rindx
     md = item['content']
     for l, r, s in change[::-1]: md = md[:l] + s + md[r:]
+    for i in range(len(md)-1, 0, -1):
+        if md[i] != '\n': continue
+        if md[i-1] == '\n': continue
+        if i < len(md) - 1 and md[i+1] == '\n': continue
+        try:
+            ind = md.rindex('\n', 0, i)
+        except ValueError: ind = 0
+        if md[ind:i].strip().startswith('#'):
+            md = md[:i] + '\n' + md[i:]; continue
+        md = md[:i] + '<br>' + md[i+1:]
+    html += '''
+    <ul class="pagination">
+        <li><a href="''' + parenturl + '''" id="back">⬿</a></li>
+    </ul>
+    '''
     html += markdown.markdown(md)
+    if shiftable:
+        html += '''
+        <center>
+            <ul class="pagination">
+        '''
+        if prevurl: html += '<li><a href="' + prevurl + '" id="prev">«</a></li>\n'
+        else: html += '<li><a id="prev" style="color:' + bkcolor + '">«</a></li>\n'
+        if prturl: html += '<li><a href="' + prturl + '" id="list">≡</a></li>\n'
+        else: html += '<li><a id="list" style="color:' + bkcolor + '">≡</a></li>\n'
+        if nexturl: html += '<li><a href="' + nexturl + '" id="next">»</a></li>\n'
+        else: html += '<li><a id="next" style="color:' + bkcolor + '">»</a></li>\n'
+        html += '''
+            </ul>
+        </center>
+        '''
     html += '\t</div>\n'
     html += '<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>\n'
     html += footer + '</body>\n</html>'
     if not os.path.exists('pages') or not os.path.isdir('pages'): os.mkdir('pages')
-    with open(os.path.join('pages', str(item['timestamp']).replace('.', '_') + '.html'), 'w') as fp: fp.write(html)
+    with open(os.path.join('pages', pagename(item)), 'w') as fp: fp.write(html)
+
+
+def chinese2digits(uchars_chinese):
+    total = 0
+    r = 1  # 表示单位：个十百千...
+    for i in range(len(uchars_chinese) - 1, -1, -1):
+        val = {'序': 0, '零': 0, '一': 1, '二': 2, '两': 2, '三': 3, '四': 4, '五': 5,
+               '六': 6, '七': 7, '八': 8, '九': 9, '十': 10, '百': 100, '千': 1000,
+               '万': 10000, '亿': 100000000}.get(uchars_chinese[i])
+        if val >= 10 and i == 0:  # 应对 十三 十四 十*之类
+            if val > r:
+                r = val
+                total = total + val
+            else:
+                r = r * val
+                # total =total + r * x
+        elif val >= 10:
+            if val > r:
+                r = val
+            else:
+                r = r * val
+        else:
+            total = total + r * val
+    return total
+
+
+num_str_start_symbol = ['序', '一', '二', '两', '三', '四', '五', '六', '七', '八', '九',
+                        '十']
+more_num_str_symbol = ['序', '零', '一', '二', '两', '三', '四', '五', '六', '七', '八',
+                       '九', '十', '百', '千', '万', '亿']
+
+def changeChineseNumToArab(oriStr):
+    lenStr = len(oriStr);
+    aProStr = ''
+    if lenStr == 0:
+        return aProStr;
+
+    hasNumStart = False;
+    numberStr = ''
+    for idx in range(lenStr):
+        if oriStr[idx] in num_str_start_symbol:
+            if not hasNumStart:
+                hasNumStart = True;
+
+            numberStr += oriStr[idx]
+        else:
+            if hasNumStart:
+                if oriStr[idx] in more_num_str_symbol:
+                    numberStr += oriStr[idx]
+                    continue
+                else:
+                    numResult = str(chinese2digits(numberStr))
+                    numberStr = ''
+                    hasNumStart = False;
+                    aProStr += numResult
+
+            aProStr += oriStr[idx]
+            pass
+
+    if len(numberStr) > 0:
+        resultNum = chinese2digits(numberStr)
+        aProStr += str(resultNum)
+
+    return aProStr
+
 
 for sec in sections:
-    if sec['theme'].upper() == 'GALLERY': buildGALLERY(sec)
-    if sec['theme'].upper() == 'BLOG': buildBLOG(sec)
+    theme = sec['theme'].upper()
+    if theme not in ['GALLERY', 'BLOG', 'BOOK']:
+        raise TypeError("Unrecognized theme " + theme+ '.')
+    exec('build' + theme + '(sec)')

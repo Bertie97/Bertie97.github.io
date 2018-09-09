@@ -1,0 +1,591 @@
+:root {
+  --side-bar-bg-color: #fafafa;
+  --control-text-color: #777;
+}
+
+@include-when-export url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Open Sans Regular'),url('./bj/400.woff') format('woff')
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Open Sans Italic'),url('./bj/400i.woff') format('woff')
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Open Sans Bold'),url('./bj/700.woff') format('woff')
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: bold;
+  src: local('Open Sans Bold Italic'),url('./bj/700i.woff') format('woff')
+}
+
+html {
+  font-size: 20px;
+}
+
+body {
+  font-family: "Open Sans","Clear Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: rgb(51, 51, 51);
+  line-height: 1.6;
+}
+
+#write{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px 30px 40px 30px;
+  padding-top: 20px;
+  padding-bottom: 100px;
+}
+#write > ul:first-child,
+#write > ol:first-child{
+  margin-top: 30px;
+}
+
+body > *:first-child {
+  margin-top: 0 !important;
+}
+body > *:last-child {
+  margin-bottom: 0 !important;
+}
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+  cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+  /*background: url("../../images/modules/styleguide/para.png") no-repeat 10px center;*/
+  text-decoration: none;
+}
+h1 tt,
+h1 code {
+  font-size: inherit;
+}
+h2 tt,
+h2 code {
+  font-size: inherit;
+}
+h3 tt,
+h3 code {
+  font-size: inherit;
+}
+h4 tt,
+h4 code {
+  font-size: inherit;
+}
+h5 tt,
+h5 code {
+  font-size: inherit;
+}
+h6 tt,
+h6 code {
+  font-size: inherit;
+}
+h1 {
+  text-align: center;
+  padding-bottom: .3rem;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+h2 {
+  padding-bottom: .3rem;
+  font-size: 1.75rem;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+h3 {
+  font-size: 1.5rem;
+  line-height: 1.43;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1rem;
+}
+h6 {
+  text-align: center;
+  font-size: 1rem;
+  /* color: #777;*/
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+  margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+  margin: 0 0;
+}
+hr {
+  color: #ddd;
+  height: 1px;
+  margin: 2em 0;
+  border-top: solid 1px #ddd;
+  border-bottom: none;
+  border-left: 0;
+  border-right: 0;
+  page-break-after: always;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h1:first-child + h2 {
+  margin-top: 0;
+  padding-top: 0;
+}
+body > h3:first-child,
+body > h4:first-child,
+body > h5:first-child,
+body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+a:first-child h1,
+a:first-child h2,
+a:first-child h3,
+a:first-child h4,
+a:first-child h5,
+a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+h1 p,
+h2 p,
+h3 p,
+h4 p,
+h5 p,
+h6 p {
+  margin-top: 0;
+}
+
+/** number the headers*/
+/*#write {
+  counter-reset: h1 h2 h3 h4 h5 h6
+}
+
+h1 {
+  counter-reset: h2 h3 h4 h5 h6
+}
+
+h2 {
+  counter-reset: h3 h4 h5 h6
+}
+
+h3 {
+  counter-reset: h4 h5 h6
+}
+
+h4 {
+  counter-reset: h5 h6
+}
+
+#write h3:before {
+  counter-increment: h3;
+  content: counter(h3) ". "
+}
+
+#write h4:before {
+  counter-increment: h4;
+  content: counter(h3) "." counter(h4) ". "
+}
+
+#write h5:before {
+  counter-increment: h5;
+  content: counter(h3) "." counter(h4) "." counter(h5) ". "
+}*/
+
+/** override the default style for focused headings */
+#write>h3.md-focus:before,
+#write>h4.md-focus:before,
+#write>h5.md-focus:before,
+#write>h6.md-focus:before,
+h3.md-focus:before,
+h4.md-focus:before,
+h5.md-focus:before,
+h6.md-focus:before {
+  color: inherit;
+  border: inherit;
+  border-radius: inherit;
+  position: inherit;
+  left:initial;
+  float: none;
+  top:initial;
+  font-size: inherit;
+  padding-left: inherit;
+  padding-right: inherit;
+  vertical-align: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+li p.first {
+  display: inline-block;
+}
+ul,
+ol {
+  padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+  margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+  margin-bottom: 0;
+}
+blockquote {
+  padding: 0.4em 1.6em;
+  font-style: italic;
+  border-left: 3px solid #dddddd;
+  color: #777777;
+}
+blockquote blockquote {
+  padding-right: 0;
+}
+
+table {
+  padding: 0;
+  word-break: initial;
+}
+table tr {
+  border-top: 1px solid #cccccc;
+  margin: 0;
+  padding: 0;
+}
+/*
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+*/
+
+table tr th {
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr td {
+  border: 1px solid #cccccc;
+  text-align: left;
+  margin: 0;
+  padding: 6px 13px;
+}
+table tr th:first-child,
+table tr td:first-child {
+  margin-top: 0;
+}
+table tr th:last-child,
+table tr td:last-child {
+  margin-bottom: 0;
+}
+table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #aaa;
+}
+
+.CodeMirror-gutters {
+  border-right: 1px solid #ddd;
+}
+
+.md-fences,
+code,
+tt {
+  /*     border: 1px solid #ddd;    */
+
+  /*     background-color: #f8f8f8;    */
+
+  /*     border-radius: 3px;    */
+
+  padding: 0;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  padding: 2px 4px 0px 4px;
+  font-size: 0.9rem;
+  font-weight: inherit;
+}
+
+code {
+  opacity: 0.8;
+  padding: 2px 2px 0px 2px;
+}
+
+mark {
+  color: #FF0000;
+  background-color: #00000000;
+  font-weight: bold;
+  font-size: inherit;
+}
+
+.md-fences {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 0.2em 1em;
+  padding-top: 8px;
+  padding-bottom: 6px;
+}
+
+.task-list{
+  padding-left: 0;
+}
+
+.task-list-item {
+  padding-left:32px;
+}
+
+.task-list-item input{
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  -webkit-appearance: initial;
+  top: -2px;
+}
+
+.task-list-item input:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.task-list-item input:before{
+  border: 1px solid #555;
+  border-radius: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #fff;
+  content: ' ';
+  transition: background-color 200ms ease-in-out;
+  display: block;
+}
+
+.task-list-item input:checked:before,
+.task-list-item input[checked]:before{
+  background: #333;
+  border-width: 2px;
+  display:inline-block;
+  transition: background-color 200ms ease-in-out;
+}
+
+.task-list-item input:checked:after,
+.task-list-item input[checked]:after {
+  opacity: 1;
+}
+
+.task-list-item input:after {
+  opacity: 1;
+  -webkit-transition: opacity 0.05s ease-in-out;
+  -moz-transition: opacity 0.05s ease-in-out;
+  transition: opacity 0.05s ease-in-out;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  position: absolute;
+  top: 0.4375rem;
+  left: 0.28125rem;
+  width: 0.9375rem;
+  height: 0.5rem;
+  border: 3px solid #fff;
+  border-top: 0;
+  border-right: 0;
+  content: ' ';
+  opacity: 0;
+}
+
+@media screen and (min-width: 914px) {
+  /*body {
+  width: 854px;
+  margin: 0 auto;
+  }*/
+}
+@media print {
+  html {
+    font-size: 16px;
+  }
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+  pre {
+    word-wrap: break-word;
+  }
+}
+
+.md-fences {
+  background-color: #fff;
+  /*border: 1px solid #def;*/
+  box-shadow: -1px -1px 2px #aaa;
+  /*box-shadow: 2px 2px 5px #aaa;*/
+  border-radius: 4px;
+}
+.md-fences>.code-tooltip {
+  box-shadow: none;
+  background-color: transparent;
+  /*   border: 1px solid #dddfff;  */
+
+}
+.code-tooltip-content {
+  font-size: 1.1rem;
+}
+#write pre.md-meta-block {
+  padding: 1rem;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border: 0;
+  border-radius: 3px;
+  color: #777777;
+  margin-top: 0 !important;
+}
+
+/* #write {
+  counter-reset: ftr;
+}
+.md-def-footnote:before {
+  counter-increment: ftr;
+  content: counter(ftr) ". "
+} */
+sup {
+  font-size: 0.6rem;
+  vertical-align: super;
+}
+
+.mathjax-block>.code-tooltip {
+  bottom: .375rem;
+  box-shadow: none;
+}
+
+#write>h3.md-focus:before{
+  left: -1.5625rem;
+  top: .375rem;
+}
+#write>h4.md-focus:before{
+  left: -1.5625rem;
+  top: .285714286rem;
+}
+#write>h5.md-focus:before{
+  left: -1.5625rem;
+  top: .285714286rem;
+}
+#write>h6.md-focus:before{
+  left: -1.5625rem;
+  top: .285714286rem;
+}
+#write>h7.md-focus:before{
+  left: -1.5625rem;
+  top: .285714286rem;
+}
+.md-image>.md-meta {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  padding: 2px 4px 0px 4px;
+  font-size: 0.9em;
+  color: inherit;
+}
+
+.md-tag{
+  color: inherit;
+}
+
+.md-toc {
+  margin-top:20px;
+  padding-bottom:20px;
+  page-break-after: always;
+}
+
+.md-toc-h6 {
+  display: none;
+}
+
+.sidebar-tabs {
+  border-bottom: none;
+}
+
+#typora-quick-open {
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+  background-color: #FAFAFA;
+  border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+  border-style: solid;
+  border-width: 1px;
+}
+
+#md-notification:before {
+  top: 10px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+  border-left-color: rgba(64, 64, 64, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+  font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+  visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+  background-color: #fafafa;
+  background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+  color: #b4654d;
+}
+
+#md-searchpanel .btn {
+  border: 1px solid #dddddd;
+}
+
+.cm-property {
+  color: #83fe32;
+}

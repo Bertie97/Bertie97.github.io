@@ -17,3 +17,15 @@ ratio = 0.64
 ###### 列表每页项目数
 
 entry = 10
+
+###### 章节列表列数
+
+ccol = 3
+
+###### Github网站
+
+giturl = "https://github.com/Bertie97/Bertie97.github.io"
+
+###### 背景颜色
+
+bkcolor = "white"

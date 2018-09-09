@@ -6,15 +6,38 @@
     <title>Bertie的摄影作品</title>
 <link type="text/css" rel="stylesheet" href="css/photos.css"/>
 </head>
-<body onLoad="setPage(1,3);">
+<body onLoad="setPage(1,3);" onkeydown="return onKey(event)">
 
+    <script type="text/javascript">
+    function onKey(e)
+    {
+        var c = window.event ? event.keyCode : event.which;
+        switch(c) {
+            case 37: document.getElementById('page«').click(); break;
+            case 39: document.getElementById('page»').click(); break;
+        }
+    }
+    </script>
+    
 <div id="header" class="header">
     <div style="float:right; margin-top: 10px">
         <table>
             <tr>
-                <td><a class="navitem" href="./index.html">首页</a></td>
-<td><a class="navitem" href="./程序.html">程序</a></td><td><a class="navitem" href="./摄影.html">摄影</a></td><td><a class="navitem" href="./食谱.html">食谱</a></td><td><a class="navitem" href="./小说.html">小说</a></td>
-                <td><a class="navitem" href="./about.html">关于</a></td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="./index.html">首页</a>
+                </td>
+<td style="border: none; padding: 0;">
+                     <a class="navitem" href="./程序.html">程序</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="./摄影.html">摄影</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="./食谱.html">食谱</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="./小说.html">小说</a>
+                 </td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="./about.html">关于</a>
+                </td>
             </tr>
         </table>
     </div>
@@ -25,7 +48,7 @@
 </div>
 <div class="header" style="border:none">
     <div id="title">
-        <h1 class="title"><span style="color:white"><b>Bertie</b> 的主页</span></h1>
+        <h1 class="title"><span style="color:' + bkcolor + '"><b>Bertie</b> 的主页</span></h1>
         <div style="width:100%; height:1rem"></div>
     </div>
 </div>
@@ -400,7 +423,7 @@
             <li><a id="page»" onclick="movePage(+1, 3);">»</a></li>
         </ul>
     </center>
-    <div id="footer">© BFG Bertie 2018</div><div class="wordsonpic" style="top:620px"><h1>Bertie的摄影作品</h1></div>
+    <div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div><div class="wordsonpic" style="top:620px"><h1>Bertie的摄影作品</h1></div>
 <div id="GLY" name="GLY" style="position:absolute; top:640px"/>
 </body>
 </html>

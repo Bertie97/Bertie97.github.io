@@ -1,0 +1,19 @@
+<html>
+<body onkeydown="return noNumbers(event)">
+<script type="text/javascript">
+function noNumbers(e)
+{
+    var keynum;
+    var keychar;
+
+    keynum = window.event ? e.keyCode : e.which;
+    keychar = String.fromCharCode(keynum);
+    alert(keynum+':'+keychar);
+}
+
+</script>
+<div type="text" tabindex="0" style="width:40rem; margin:auto; height:200%">
+
+</div>
+</body>
+</html>

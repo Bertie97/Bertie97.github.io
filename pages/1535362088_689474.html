@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>劫匪的经验</title>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../js/blog.js"></script>
+<link type="text/css" rel="stylesheet" href="../css/blog.css"/>
+</head>
+<body onkeydown="return onKey(event)">
+
+        <script type="text/javascript">
+        function onKey(e)
+        {
+            var c = window.event ? event.keyCode : event.which;
+            switch(c) {
+                case 8:  document.getElementById('back').click(); break;
+                case 13: document.getElementById('list').click(); break;
+                case 37: document.getElementById('prev').click(); break;
+                case 39: document.getElementById('next').click(); break;
+            }
+        }
+        </script>
+        
+<div id="header" class="header">
+    <div style="float:right; margin-top: 10px">
+        <table>
+            <tr>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../index.html">首页</a>
+                </td>
+<td style="border: none; padding: 0;">
+                     <a class="navitem" href="../程序.html">程序</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../摄影.html">摄影</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../食谱.html">食谱</a>
+                 </td><td style="border: none; padding: 0;">
+                     <a class="navitem" href="../小说.html">小说</a>
+                 </td>
+                <td style="border: none; padding: 0;">
+                    <a class="navitem" href="../about.html">关于</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="title">
+        <h1 class="title"><b>Bertie</b> 的网页</h1>
+        <hr style="width:100%; margin:0">
+    </div>
+</div>
+<div class="header" style="border:none">
+    <div id="title">
+        <h1 class="title"><span style="color:' + bkcolor + '"><b>Bertie</b> 的主页</span></h1>
+        <div style="width:100%; height:1rem"></div>
+    </div>
+</div>
+	<div style="width:40rem; margin:2rem auto; padding:6rem;    box-shadow: 2px 2px 4px #888; border-radius:0.4rem;" id="page">
+
+    <ul class="pagination">
+        <li><a href="短篇.html" id="back">⬿</a></li>
+    </ul>
+    <h1>劫匪的经验</h1>
+<p>老劫匪劝小劫匪弃坑，说到：“你说现在对劫匪的技术要求是越来越高。一零年的时候你只要举起一把水果刀大喊‘交出钱来！不然捅死你！’就可以抢到那人随身的钱财。到了二零年你得喊‘拿出手机扫码付钱，才能留下性命！’，虽然这样可以抢到他支付平台限额的财产，但为了躲避追踪你需要经常更换电话卡和银行卡，还得时刻提防对方报警。到三零年就更不对了，你还得了解机器人结构，拿出水果刀对机器人说：‘交出他的钱，不然破坏掉你的核心电路！’而且一般来说这么做只会迎来‘听不懂您在说什么’的回答。”</p>
+        <center>
+            <ul class="pagination">
+        <li><a href="1534910219_184603.html" id="prev">«</a></li>
+<li><a href="短篇.html" id="list">≡</a></li>
+<li><a href="1535554073_7740781.html" id="next">»</a></li>
+
+            </ul>
+        </center>
+        	</div>
+<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>
+<div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div></body>
+</html>
