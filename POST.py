@@ -10,8 +10,11 @@ eps = 0.0001
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
 def lite(f):
-    res = os.extsep.join(f.split(os.extsep)[:-1]) + \
-          '_lite' + os.extsep + f.split(os.extsep)[-1]
+    return os.extsep.join(f.split(os.extsep)[:-1]) + \
+           '_lite' + os.extsep + f.split(os.extsep)[-1]
+
+def getlite(f):
+    res = lite(f)
     if os.path.exists(res): return res
     return f
 
@@ -184,7 +187,7 @@ for sec in sections:
                 </div>
             </td>
     '''.format(height=tk.Tk().winfo_screenheight() * 2 // 3, per=100 // len(sections),
-               name=sec['name'], content=sec['text'], icon=lite(sec['icon']))
+               name=sec['name'], content=sec['text'], icon=getlite(sec['icon']))
 
 html += about + '''
         </tr>
@@ -333,7 +336,7 @@ def buildGALLERY(sec):
                         </a>
                     </center>
                 </td>
-        '''.format(path=f, con=constraint, litefile=lite(f), per=100 // col)
+        '''.format(path=f, con=constraint, litefile=getlite(f), per=100 // col)
         if i % col == col - 1: html += '\t\t</tr>\n'
         i += 1
     html += '</table>'
@@ -418,7 +421,7 @@ def buildBLOG(sec):
                 </td>
             </tr>
         '''.format(href=os.path.join('pages', pagename(item)),
-                   hr = '<hr>' if i % entry != 0 else '', icon=lite(item['icon']),
+                   hr = '<hr>' if i % entry != 0 else '', icon=getlite(item['icon']),
                    title = item['title'], Y=Y, M=M, D=D, h=h, m=m, s=s,
                    subtitle = item['subtitle'])
     html += '\t\t\t</table>\n'
@@ -454,7 +457,7 @@ def buildBOOK(sec):
             name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
             file = os.path.join(dir, file)
             if name.upper() == 'ICON' and extension in imgext:
-                newbook['icon'] = lite(file); continue
+                newbook['icon'] = getlite(file); continue
             if extension != 'md': continue
             if name.lower().startswith('intro') or name.endswith('介绍'):
                 with open(file) as fp: newbook['intro'] = fp.read()
@@ -611,7 +614,7 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         path = tmp[lindx:rindx]
         if not os.path.isabs(path) and not os.path.exists(path) and '://' not in path:
             path = os.path.join(os.path.pardir, dir, '') + path
-        path = lite(path)
+        path = getlite(path)
         change.append((lindx + start, rindx + start, path))
         tmp = tmp[rindx:]
         start += rindx
