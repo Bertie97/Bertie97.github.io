@@ -1,12 +1,17 @@
 #! /usr/bin/env python3
 #  -*- coding: utf-8 -*-
 
-import os, re, sys, shutil, time, markdown
+import os, re, sys
+import shutil, time
+import markdown
+import datetime as dt
 import tkinter as tk
 import numpy as np
 from PIL import Image
 
+DEBUG = True
 eps = 0.0001
+bkcolor = "white"
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
 def lite(f):
@@ -24,11 +29,25 @@ def pagename(item):
 
 Dsample = 'SAMPLE'
 for folder in ['js', 'css', 'res', 'img']:
-    # if os.path.exists(folder): shutil.rmtree(folder) # TODO: DELETE
+    if DEBUG and os.path.exists(folder): shutil.rmtree(folder) # TODO: DELETE
     if not os.path.exists(folder):
         shutil.copytree(os.path.join(Dsample, folder), folder)
 for file in os.listdir('pages'):
     os.remove(os.path.join('pages', file))
+
+Fconfig = os.path.join('CONTENTS', 'CONFIG.md')
+try:
+    with open(Fconfig) as fp:
+        lines = [l.strip() for l in fp.readlines()]
+        validLines = [l for l in lines if l and not l.startswith('#')]
+        locals().update({l.split('=')[0].strip(): eval('='.join(l.split('=')[1:]))
+                         for l in validLines})
+except FileNotFoundError: pass
+defaults = {'MYNAME': "未命名", 'col': 4, 'row': 3, 'ratio': 0.64, 'entry': 10,
+            'ccol': 3, 'giturl': ""}
+for var in defaults:
+    if var not in locals(): locals()[var] = defaults[var]
+if 'foot' not in locals(): foot = "© " + MYNAME + " " + str(dt.datetime.now().year)
 
 Dabout = os.path.join('CONTENTS', 'ABOUT')
 intro = ''; sections = []
@@ -82,6 +101,8 @@ def minifyPics(dir, size=300):
             else: minifyPics(file, size=size)
         if extension not in imgext: continue
         if '_lite' in file:
+            if not os.path.exists(file.replace('_lite', '')):
+                os.remove(file); continue
             lw, lh = Image.open(file).size
             w, h = Image.open(file.replace('_lite', '')).size
             if lw/lh - w/h < eps and lh == size: continue
@@ -100,13 +121,6 @@ def minifyPics(dir, size=300):
         image = image.resize((w, h))
         image.save(open(newfilename, 'wb'))
 minifyPics('CONTENTS')
-
-Fconfig = os.path.join('CONTENTS', 'CONFIG.md')
-with open(Fconfig) as fp:
-    lines = [l.strip() for l in fp.readlines()]
-    validLines = [l for l in lines if l and not l.startswith('#')]
-    locals().update({l.split('=')[0].strip(): eval('='.join(l.split('=')[1:]))
-                     for l in validLines})
 
 def head(title='', js=[], css=[], other=''):
     s = '''
@@ -155,8 +169,8 @@ header += '''
     </div>
 </div>
 '''.format(name=MYNAME)
-footer = '<div id="footer"><a href="{}" style="text-decoration:none; color:white">\
-© BFG Bertie 2018</a></div>'.format(giturl)
+footer = '<div id="footer"><a href="' + giturl
+footer += '" style="text-decoration:none; color:white">' + foot + '</a></div>'
 jquery = "js/jquery-3.3.1.min.js"
 
 
@@ -176,15 +190,15 @@ about = ''
 for sec in sections:
     about += '''
             <td width="{per}%">
-                <div class="block" style="height:{height}px">
-                    <center>
-                        <a class="navitem" href="{name}.html">
+                <a class="navitem" href="{name}.html">
+                    <div class="block" style="height:{height}px">
+                        <center>
                             <img class="round" src="{icon}"/>
                             <h4 style="margin:0">{name}</h4>
                             <p>{content}</p>
-                        </a>
-                    </center>
-                </div>
+                        </center>
+                    </div>
+                </a>
             </td>
     '''.format(height=tk.Tk().winfo_screenheight() * 2 // 3, per=100 // len(sections),
                name=sec['name'], content=sec['text'], icon=getlite(sec['icon']))
@@ -264,12 +278,14 @@ def buildGALLERY(sec):
         parts = file.split(os.extsep)
         name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
         if extension not in imgext: continue
-        try: n = int(name)
+        file = os.path.join(Dphotos, file)
+        try: n = int(name.split('-')[0])
         except: n = None
-        if n != None and n < 1000: banner.append(os.path.join(Dphotos, file))
-        gallery.append(os.path.join(Dphotos, file))
+        if n != None and n < 1000: banner.append(file)
+        gallery.append((-os.stat(file).st_mtime, file))
     banner.sort()
     gallery.sort()
+    gallery = [x[1] for x in gallery]
     if banner:
         html += '''
         <div class="slide-main" id="touchMain">
@@ -344,9 +360,11 @@ def buildGALLERY(sec):
     if numpages > int(numpages) + eps: numpages += 1
     numpages = int(numpages)
     if numpages > 1: html += pageButtons(numpages, row)
+    pagetitle = sec['title'].format(MYNAME)
     html += footer
-    html += '<div class="wordsonpic" style="top:620px"><h1>'
-    html += sec['title'].format(MYNAME) + '</h1></div>\n'
+    html += '<div class="wordsonpic" style="top:620px; width:{w}rem; margin-left:-{whf}rem; left: 50%;"><h1>'\
+            .format(w=2*len(pagetitle), whf=len(pagetitle))
+    html += pagetitle + '</h1></div>\n'
     html += '<div id="GLY" name="GLY" style="position:absolute; top:640px"/>\n'
     html += '</body>\n</html>'
     with open(sec['name'] + '.html', 'w') as fp: fp.write(html)
@@ -533,10 +551,10 @@ def buildBOOK(sec):
         html += '<body>\n' + header.replace('"./', '"../')
         html += '''
         <div style="width:40rem; margin:auto">
-            <ul class="pagination" style="float:left; margin:0.8rem; border-radius:0.1rem">
+            <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem">
                 <li><a href="''' + os.path.join(os.path.pardir, sec['name']) + '''.html">⬿</a></li>
             </ul>
-            <ul class="pagination" style="float:right; margin: 0.8rem">
+            <ul class="pagination" style="float:right; margin: 0.3rem">
                 <li><a href="javascript:void(0)" style="color:''' + bkcolor + '''">⬿</a></li>
             </ul>
             <center><h1 id="main">{title}</h1></center>
@@ -569,10 +587,10 @@ def buildBOOK(sec):
         html += '\t\t\t\t</table>\n\t\t\t</div>\t\t</div>\n'
         html += footer
         html += '''
-        <div id='cover'></div>
-        <div id="popout"><p style="margin:2rem">{}</p></div>
-        <ul class="pagination" style="position:absolute; top:25%; left:50%;
-                                      margin-left:17.4rem; z-index:5">
+        <div id='cover' style="z-index:1003"></div>
+        <div id="popout" style="z-index:1004"><p style="margin:2rem">{}</p></div>
+        <ul class="pagination" style="position:absolute; top:12.5%; left:50%;
+                                      margin-left:17.4rem; z-index:1005">
             <li><a href = "javascript:void(0)" id='closepop'>×</a></li>
         </ul>
         '''.format(book['intro'])
@@ -609,13 +627,18 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
     while True:
         res = re.search(r'!\[[^\[\]]*\]\(', tmp)
         if res == None: break
+        remove = False
+        p = res.span()[0] - 1
+        while p >= 0 and tmp[p] in [' ', '\t']: p -= 1
+        if p >= 0 and tmp[p] == '#': imgstart = p; remove = True
         lindx = res.span()[1]
         rindx = tmp.find(')', lindx)
         path = tmp[lindx:rindx]
         if not os.path.isabs(path) and not os.path.exists(path) and '://' not in path:
             path = os.path.join(os.path.pardir, dir, '') + path
         path = getlite(path)
-        change.append((lindx + start, rindx + start, path))
+        if remove: change.append((imgstart + start, rindx + start + 1, ''))
+        else: change.append((lindx + start, rindx + start, path))
         tmp = tmp[rindx:]
         start += rindx
     md = item['content']
@@ -727,3 +750,6 @@ for sec in sections:
     if theme not in ['GALLERY', 'BLOG', 'BOOK']:
         raise TypeError("Unrecognized theme " + theme+ '.')
     exec('build' + theme + '(sec)')
+
+time.sleep(1)
+os.system("open index.html")

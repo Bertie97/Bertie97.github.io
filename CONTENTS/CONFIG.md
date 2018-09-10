@@ -26,6 +26,6 @@ ccol = 3
 
 giturl = "https://github.com/Bertie97/Bertie97.github.io"
 
-###### 背景颜色
+###### 页脚
 
-bkcolor = "white"
+foot = "© BFG Bertie 2018"

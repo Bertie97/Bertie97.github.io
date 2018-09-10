@@ -31,9 +31,10 @@ $(function(){
         $('#closepop').fadeOut()
     });
     $('#intro').click(function(){
-        $('#cover').fadeIn()
-        $('#popout').fadeIn()
-        $('#closepop').fadeIn()
+        alert($('#intro').html())
+        // $('#cover').fadeIn()
+        // $('#popout').fadeIn()
+        // $('#closepop').fadeIn()
     });
 });
 
