@@ -277,6 +277,15 @@ ul:last-child,
 ol:last-child {
   margin-bottom: 0;
 }
+ol {counter-reset: ol}
+ol li p::before {
+    counter-increment: ol;
+    content: counter(ol) ". "
+}
+ul li p::before {
+    content: "● "
+}
+ul, ol {padding-left: 0}
 blockquote {
   padding: 0.4em 1.6em;
   font-style: italic;

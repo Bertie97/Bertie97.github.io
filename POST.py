@@ -14,6 +14,9 @@ eps = 0.0001
 bkcolor = "white"
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
+def isint(s):
+    try: int(s); return True
+    except: return False
 def org(f): return f.replace('_lite', '').replace('_mini', '')
 def lite(f, ext='_lite'):
     return os.extsep.join(f.split(os.extsep)[:-1]) + \
@@ -182,7 +185,7 @@ popout = '''
 <div id="popout" style="z-index:1004; {astyle}; display:none"></div>
 <div id="popcontent" style="display:none"><p>{}</p></div>
 <ul class="pagination" id="cross" style="z-index:1005">
-    <li id='closepop' style="display:none"><i class="mdi mdi-close-outline"></i></li>
+    <li id='closepop' style="display:none"><i class="mdi mdi-18px mdi-close-outline"></i></li>
 </ul>
 '''
 
@@ -323,7 +326,7 @@ def buildGALLERY(sec):
             w = w * 640 // h
             html += '''
         		<div class="slide" style="background-color:rgb({r},{g},{b})">
-        			<a class="topop" href="javascript:;" name="{file}" target="_blank">
+        			<a class="topop" href="javascript:;" name="{file}">
         				<div class="obj" style="left:50%; margin-left:-{hfw}px; width:{w}px" >
                             <img src="{file}" class='pic'/>
                         </div>
@@ -571,7 +574,7 @@ def buildBOOK(sec):
         html += '''
         <div style="width:40rem; margin:auto">
             <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem; width:1rem">
-                <li><a href="''' + os.path.join(os.path.pardir, sec['name']) + '''.html">⬿</a></li>
+                <li><a href="''' + os.path.join(os.path.pardir, sec['name']) + '''.html">↩</a></li>
             </ul>
             <div style="float:right; margin: 0.3rem; display:inline-block; padding:0; width:1rem"></div>
             <center><h1 id="main">{title}</h1></center>
@@ -660,17 +663,15 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         try:
             ind = md.rindex('\n', 0, i)
         except ValueError: ind = 0
-        if md[ind:i].strip().startswith('#'):
+        if md[ind:i].strip().startswith('#') or md[ind:i].strip().startswith('-')\
+            or isint(md[ind:i].strip().split('.')[0]):
             md = md[:i] + '\n' + md[i:]; continue
         md = md[:i] + '<br>' + md[i+1:]
     html += '''
     <ul class="pagination">
-        <li><a href="''' + parenturl + '''" id="back">⬿</a></li>
+        <li><a href="''' + parenturl + '''" id="back">↩</a></li>
     </ul>
     '''
-    if '编辑' in item['title']:
-        print(md)
-        print(markdown.markdown(md))
     html += markdown.markdown(md)
     if shiftable:
         html += '''
