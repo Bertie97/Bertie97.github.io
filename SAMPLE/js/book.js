@@ -1,9 +1,9 @@
 
 $(function(){
-    $('#cover').hide()
-    $('#popout').hide()
+    // $('#cover').hide()
+    // $('#popout').hide()
     $('#goToTop').hide()
-    $('#closepop').hide()
+    // $('#closepop').hide()
     $(window).scroll(function(){
         // console.log($(this).scrollTop());
 
@@ -24,16 +24,19 @@ $(function(){
         $('#cover').fadeOut()
         $('#popout').fadeOut()
         $('#closepop').fadeOut()
+        $('#popcontent').fadeOut()
     });
     $('#cover').click(function(){
         $('#cover').fadeOut()
         $('#popout').fadeOut()
         $('#closepop').fadeOut()
+        $('#popcontent').fadeOut()
     });
     $('#intro').click(function(){
         $('#cover').fadeIn()
         $('#popout').fadeIn()
         $('#closepop').fadeIn()
+        $('#popcontent').fadeIn()
     });
 });
 
