@@ -14,6 +14,7 @@ eps = 0.0001
 bkcolor = "white"
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
+def org(f): return f.replace('_lite', '').replace('_mini', '')
 def lite(f, ext='_lite'):
     return os.extsep.join(f.split(os.extsep)[:-1]) + \
            ext + os.extsep + f.split(os.extsep)[-1]
@@ -101,22 +102,14 @@ def minifyPics(dir, size=300, ext='_lite'):
                 minifyPics(file, size=300, ext='_mini')
             else: minifyPics(file, size=size, ext=ext)
         if extension not in imgext: continue
-        if '_lite' in file:
-            if not os.path.exists(file.replace('_lite', '')):
+        if '_lite' in file or '_mini' in file:
+            if not os.path.exists(org(file)):
                 os.remove(file); continue
             lw, lh = Image.open(file).size
-            w, h = Image.open(file.replace('_lite', '')).size
+            w, h = Image.open(org(file)).size
             if lw/lh - w/h < eps and lh == size: continue
             newfilename = file
-            file = file.replace('_lite', '')
-        elif '_mini' in file:
-            if not os.path.exists(file.replace('_mini', '')):
-                os.remove(file); continue
-            lw, lh = Image.open(file).size
-            w, h = Image.open(file.replace('_mini', '')).size
-            if lw/lh - w/h < eps and lh == size: continue
-            newfilename = file
-            file = file.replace('_mini', '')
+            file = org(file)
         else:
             newfilename = lite(file, ext)
             if os.path.exists(newfilename): continue
@@ -333,7 +326,7 @@ def buildGALLERY(sec):
                         </div>
         			</a>
         		</div>
-                '''.format(r=r, g=g, b=b, file=f, w=w, hfw=w//2)
+                '''.format(r=r, g=g, b=b, file=org(f), w=w, hfw=w//2)
         with open(os.path.join(Dphotos, 'picInfo.md'), 'w') as fp:
             fp.write('\n'.join([' '.join([im] + [str(t) for t in cmap[im]]) for im in cmap]))
         html += '''
