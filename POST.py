@@ -19,9 +19,9 @@ def lite(f, ext='_lite'):
     return os.extsep.join(f.split(os.extsep)[:-1]) + \
            ext + os.extsep + f.split(os.extsep)[-1]
 
-def getlite(f, ext='_lite'):
+def getlite(f, ext='_lite', dir='.'):
     res = lite(f, ext)
-    if os.path.exists(res): return res
+    if os.path.exists(os.path.join(dir, res)): return res
     return f
 
 def pagename(item):
@@ -104,12 +104,13 @@ def minifyPics(dir, size=300, ext='_lite'):
         if extension not in imgext: continue
         if '_lite' in file or '_mini' in file:
             if not os.path.exists(org(file)):
-                os.remove(file); continue
-            lw, lh = Image.open(file).size
-            w, h = Image.open(org(file)).size
+                os.remove(file)
+            continue
+        if os.path.exists(lite(file, ext)):
+            lw, lh = Image.open(lite(file, ext)).size
+            w, h = Image.open(file).size
             if lw/lh - w/h < eps and lh == size: continue
-            newfilename = file
-            file = org(file)
+            newfilename = lite(file, ext)
         else:
             newfilename = lite(file, ext)
             if os.path.exists(newfilename): continue
@@ -152,7 +153,7 @@ for sec in sections:
                      <a class="navitem" href="./{name}.html">{name}</a>
                  </td>'''.format(name=sec['name'])
 
-header += '''
+header += ('''
                 <td style="border: none; padding: 0;">
                     <a class="navitem" href="./about.html">关于</a>
                 </td>
@@ -166,11 +167,13 @@ header += '''
 </div>
 <div class="header" style="border:none">
     <div id="title">
-        <h1 class="title"><span style="color:' + bkcolor + '"><b>{name}</b> 的主页</span></h1>
+        <h1 class="title"><span style="color:''' + bkcolor + '''">
+            <b>{name}</b> 的网页
+        </span></h1>
         <div style="width:100%; height:1rem"></div>
     </div>
 </div>
-'''.format(name=MYNAME)
+''').format(name=MYNAME)
 footer = '<div id="footer"><a href="' + giturl
 footer += '" style="text-decoration:none; color:white">' + foot + '</a></div>'
 jquery = "js/jquery-3.3.1.min.js"
@@ -400,7 +403,10 @@ def buildBLOG(sec):
         newitem['timestamp'] = os.stat(file).st_mtime
         newitem['title'] = name
         newitem['content'] = content
-        newitem['subtitle'] = re.sub(r'!\[[^\[\]]*\]\([^\(\)]+\)', '[图片]', content)[:1000].replace('#', '').replace('**', '').replace('`', '')
+        con = re.sub(r'!\[[^\[\]]*\]\([^\(\)]+\)', '[图片]', content)
+        con = re.sub(r'<[^<>]+?>', '', con)
+        newitem['subtitle'] = con[:1000].replace('#', '').replace('**', '')\
+                                        .replace('`', '').replace('__', '')
         index = content.find('![COVER](')
         if index < 0: index = content.find('![LAUNCHER](')
         if index < 0: newitem['icon'] = None
@@ -579,7 +585,7 @@ def buildBOOK(sec):
             <div class='pod'>
                 <center><h3>章节列表</h3></center>
                 <table style="table-layout:fixed">
-        '''.format(title=book['name'], icon=os.path.join(os.path.pardir, book['icon']),
+        '''.format(title=book['name'], icon=getlite(os.path.join(os.path.pardir, book['icon']), dir='pages'),
                    intro=book['intro'], newest=book['newest'], Y=Y, M=M, D=D, h=h, m=m, s=s)
         for i, chap in enumerate(book['contents']):
             if not chap['content'].strip().startswith('#'):
@@ -640,7 +646,7 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         path = tmp[lindx:rindx]
         if not os.path.isabs(path) and not os.path.exists(path) and '://' not in path:
             path = os.path.join(os.path.pardir, dir, '') + path
-        path = getlite(path)
+        path = getlite(path, dir='pages')
         if remove: change.append((imgstart + start, rindx + start + 1, ''))
         else: change.append((lindx + start, rindx + start, path))
         tmp = tmp[rindx:]
@@ -662,6 +668,9 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         <li><a href="''' + parenturl + '''" id="back">⬿</a></li>
     </ul>
     '''
+    if '编辑' in item['title']:
+        print(md)
+        print(markdown.markdown(md))
     html += markdown.markdown(md)
     if shiftable:
         html += '''
