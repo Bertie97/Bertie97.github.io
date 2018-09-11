@@ -31,10 +31,9 @@ $(function(){
         $('#closepop').fadeOut()
     });
     $('#intro').click(function(){
-        alert($('#intro').html())
-        // $('#cover').fadeIn()
-        // $('#popout').fadeIn()
-        // $('#closepop').fadeIn()
+        $('#cover').fadeIn()
+        $('#popout').fadeIn()
+        $('#closepop').fadeIn()
     });
 });
 

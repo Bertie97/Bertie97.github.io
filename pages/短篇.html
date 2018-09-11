@@ -7,6 +7,7 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../js/book.js"></script>
 <link type="text/css" rel="stylesheet" href="../css/CHlist.css"/>
+<link type="text/css" rel="stylesheet" href="../res/css/materialdesignicons.min.css"/>
 </head>
 <body>
 
@@ -25,8 +26,6 @@
                      <a class="navitem" href="../食谱.html">食谱</a>
                  </td><td style="border: none; padding: 0;">
                      <a class="navitem" href="../小说.html">小说</a>
-                 </td><td style="border: none; padding: 0;">
-                     <a class="navitem" href="../食谱2.html">食谱2</a>
                  </td>
                 <td style="border: none; padding: 0;">
                     <a class="navitem" href="../about.html">关于</a>
@@ -47,15 +46,13 @@
 </div>
 
         <div style="width:40rem; margin:auto">
-            <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem">
+            <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem; width:1rem">
                 <li><a href="../小说.html">⬿</a></li>
             </ul>
-            <ul class="pagination" style="float:right; margin: 0.3rem">
-                <li><a href="javascript:void(0)" style="color:white">⬿</a></li>
-            </ul>
+            <div style="float:right; margin: 0.3rem; display:inline-block; padding:0; width:1rem"></div>
             <center><h1 id="main">短篇</h1></center>
             <div class='row'>
-                <img style="background-image: url('../CONTENTS/NOVELS/短篇/icon_lite.png')" class="mainIcon"/>
+                <img style="background-image: url('../CONTENTS/NOVELS/短篇/icon.png')" class="mainIcon"/>
                 <span id="timestamp" style="float:inherit">
                     最后更新：歌词：<br>2018年08月29日22时47分53秒
                 </span>
@@ -117,8 +114,9 @@
             				</table>
 			</div>		</div>
 <div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div>
-        <div id='cover' style="z-index:1003"></div>
-        <div id="popout" style="z-index:1004"><p style="margin:2rem">人总是享受偷懒，为了克服这一点，无数代智者发明了无数种提升人们效率的方法，其中，唐峰就是这个时代的先驱。
+<div id='cover' style="z-index:1003; display:none"></div>
+<div id="popout" style="z-index:1004; ; display:none"></div>
+<div id="popcontent" style="display:none"><p>人总是享受偷懒，为了克服这一点，无数代智者发明了无数种提升人们效率的方法，其中，唐峰就是这个时代的先驱。
 
 “下面有请唐峰先生！掌声欢迎！”电视上衣着华美的主持人伸出手掌指向舞台后方。
 一个面容略带憔悴但却精神抖擞的老者大踏步走到了舞台中央的桌边，坐了下来。
@@ -136,9 +134,8 @@
 
 第二天，全世界的人都听说了伟大的唐教授从电视大厦二十层跳楼自杀的消息。
 </p></div>
-        <ul class="pagination" style="position:absolute; top:12.5%; left:50%;
-                                      margin-left:17.4rem; z-index:1005">
-            <li><a href = "javascript:void(0)" id='closepop'>×</a></li>
-        </ul>
-        </body>
+<ul class="pagination" id="cross" style="z-index:1005">
+    <li id='closepop' style="display:none"><i class="mdi mdi-close-outline"></i></li>
+</ul>
+</body>
 </html>

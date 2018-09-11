@@ -97,10 +97,3 @@ p>img {
 .chap:hover {
     color: dodgerblue;
 }
-
-#closepop {
-    font-size: 1.5rem;
-    padding: 0 0.8rem;
-    border-radius: 0.2rem;
-    font-weight: bold;
-}

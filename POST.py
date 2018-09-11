@@ -9,17 +9,17 @@ import tkinter as tk
 import numpy as np
 from PIL import Image
 
-DEBUG = True
+DEBUG = False
 eps = 0.0001
 bkcolor = "white"
 imgext = ['jpg', 'jpeg', 'bmp', 'png']
 
-def lite(f):
+def lite(f, ext='_lite'):
     return os.extsep.join(f.split(os.extsep)[:-1]) + \
-           '_lite' + os.extsep + f.split(os.extsep)[-1]
+           ext + os.extsep + f.split(os.extsep)[-1]
 
-def getlite(f):
-    res = lite(f)
+def getlite(f, ext='_lite'):
+    res = lite(f, ext)
     if os.path.exists(res): return res
     return f
 
@@ -90,15 +90,16 @@ for file in os.listdir(Dabout):
 sections = sorted(sections, key=lambda x: x['tag'])
 themes = {sec['foldername']: sec['theme'] for sec in sections}
 
-def minifyPics(dir, size=300):
+def minifyPics(dir, size=300, ext='_lite'):
     for file in os.listdir(dir):
         parts = file.split(os.extsep)
         name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
         file = os.path.join(dir, file)
         if os.path.isdir(file):
             if themes.get(os.path.basename(file), '').upper() =='BLOG':
-                minifyPics(file, size=750)
-            else: minifyPics(file, size=size)
+                minifyPics(file, size=750, ext='_lite')
+                minifyPics(file, size=300, ext='_mini')
+            else: minifyPics(file, size=size, ext=ext)
         if extension not in imgext: continue
         if '_lite' in file:
             if not os.path.exists(file.replace('_lite', '')):
@@ -108,14 +109,22 @@ def minifyPics(dir, size=300):
             if lw/lh - w/h < eps and lh == size: continue
             newfilename = file
             file = file.replace('_lite', '')
+        elif '_mini' in file:
+            if not os.path.exists(file.replace('_mini', '')):
+                os.remove(file); continue
+            lw, lh = Image.open(file).size
+            w, h = Image.open(file.replace('_mini', '')).size
+            if lw/lh - w/h < eps and lh == size: continue
+            newfilename = file
+            file = file.replace('_mini', '')
         else:
-            newfilename = lite(file)
+            newfilename = lite(file, ext)
             if os.path.exists(newfilename): continue
         image = Image.open(file)
         w, h = image.size
         try:
-            int(name)
-            csize = 900
+            int(name.split('-')[0])
+            csize = 750
         except: csize = size
         w, h = w * csize // h, csize
         image = image.resize((w, h))
@@ -172,6 +181,14 @@ header += '''
 footer = '<div id="footer"><a href="' + giturl
 footer += '" style="text-decoration:none; color:white">' + foot + '</a></div>'
 jquery = "js/jquery-3.3.1.min.js"
+popout = '''
+<div id='cover' style="z-index:1003; display:none"></div>
+<div id="popout" style="z-index:1004; {astyle}; display:none"></div>
+<div id="popcontent" style="display:none"><p>{}</p></div>
+<ul class="pagination" id="cross" style="z-index:1005">
+    <li id='closepop' style="display:none"><i class="mdi mdi-close-outline"></i></li>
+</ul>
+'''
 
 
 # build index.html
@@ -257,7 +274,8 @@ def pageButtons(npages, nrows):
 
 
 def buildGALLERY(sec):
-    html = head(title=sec['title'].format(MYNAME), css=["css/photos.css"])
+    html = head(title=sec['title'].format(MYNAME), js=[jquery, "js/gallery.js"],
+                css=["css/photos.css", 'res/css/materialdesignicons.min.css'])
     html += '<body onLoad="setPage(1,' + str(row) + ');" onkeydown="return onKey(event)">\n'
     html += '''
     <script type="text/javascript">
@@ -309,7 +327,7 @@ def buildGALLERY(sec):
             w = w * 640 // h
             html += '''
         		<div class="slide" style="background-color:rgb({r},{g},{b})">
-        			<a href="{file}" target="_blank">
+        			<a class="topop" href="javascript:;" name="{file}" target="_blank">
         				<div class="obj" style="left:50%; margin-left:-{hfw}px; width:{w}px" >
                             <img src="{file}" class='pic'/>
                         </div>
@@ -347,7 +365,7 @@ def buildGALLERY(sec):
         html += '''
                 <td width="{per}%">
                     <center>
-                        <a href="{path}">
+                        <a class="topop" href="javascript:;" name="{path}">
                             <img src="{litefile}" {con} style="border-radius:20px"/>
                         </a>
                     </center>
@@ -362,6 +380,7 @@ def buildGALLERY(sec):
     if numpages > 1: html += pageButtons(numpages, row)
     pagetitle = sec['title'].format(MYNAME)
     html += footer
+    html += popout.format('', astyle="opacity:0.5;")
     html += '<div class="wordsonpic" style="top:620px; width:{w}rem; margin-left:-{whf}rem; left: 50%;"><h1>'\
             .format(w=2*len(pagetitle), whf=len(pagetitle))
     html += pagetitle + '</h1></div>\n'
@@ -439,7 +458,7 @@ def buildBLOG(sec):
                 </td>
             </tr>
         '''.format(href=os.path.join('pages', pagename(item)),
-                   hr = '<hr>' if i % entry != 0 else '', icon=getlite(item['icon']),
+                   hr = '<hr>' if i % entry != 0 else '', icon=getlite(item['icon'], '_mini'),
                    title = item['title'], Y=Y, M=M, D=D, h=h, m=m, s=s,
                    subtitle = item['subtitle'])
     html += '\t\t\t</table>\n'
@@ -475,7 +494,7 @@ def buildBOOK(sec):
             name, extension = os.extsep.join(parts[:-1]), parts[-1].lower()
             file = os.path.join(dir, file)
             if name.upper() == 'ICON' and extension in imgext:
-                newbook['icon'] = getlite(file); continue
+                newbook['icon'] = getlite(file, '_mini'); continue
             if extension != 'md': continue
             if name.lower().startswith('intro') or name.endswith('介绍'):
                 with open(file) as fp: newbook['intro'] = fp.read()
@@ -547,16 +566,15 @@ def buildBOOK(sec):
         Y, M, D = tinfo.tm_year, tinfo.tm_mon, tinfo.tm_mday
         h, m, s = tinfo.tm_hour, tinfo.tm_min, tinfo.tm_sec
         html = head(title=MYNAME + '的' + book['name'],
-                    css=['../css/CHlist.css'], js=['../' + jquery, '../js/book.js'])
+                    css=['../css/CHlist.css', '../res/css/materialdesignicons.min.css'],
+                    js=['../' + jquery, '../js/book.js'])
         html += '<body>\n' + header.replace('"./', '"../')
         html += '''
         <div style="width:40rem; margin:auto">
-            <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem">
+            <ul class="pagination" style="float:left; margin:0.3rem; border-radius:0.1rem; width:1rem">
                 <li><a href="''' + os.path.join(os.path.pardir, sec['name']) + '''.html">⬿</a></li>
             </ul>
-            <ul class="pagination" style="float:right; margin: 0.3rem">
-                <li><a href="javascript:void(0)" style="color:''' + bkcolor + '''">⬿</a></li>
-            </ul>
+            <div style="float:right; margin: 0.3rem; display:inline-block; padding:0; width:1rem"></div>
             <center><h1 id="main">{title}</h1></center>
             <div class='row'>
                 <img style="background-image: url('{icon}')" class="mainIcon"/>
@@ -586,14 +604,7 @@ def buildBOOK(sec):
             if i % ccol == ccol - 1: html += '\t\t\t\t\t</tr>\n'
         html += '\t\t\t\t</table>\n\t\t\t</div>\t\t</div>\n'
         html += footer
-        html += '''
-        <div id='cover' style="z-index:1003"></div>
-        <div id="popout" style="z-index:1004"><p style="margin:2rem">{}</p></div>
-        <ul class="pagination" style="position:absolute; top:12.5%; left:50%;
-                                      margin-left:17.4rem; z-index:1005">
-            <li><a href = "javascript:void(0)" id='closepop'>×</a></li>
-        </ul>
-        '''.format(book['intro'])
+        html += popout.format(book['intro'], astyle="")
         html += '</body>\n</html>'
         with open(os.path.join('pages', book['name'] + '.html'), 'w') as fp: fp.write(html)
 
