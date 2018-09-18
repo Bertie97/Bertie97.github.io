@@ -44,14 +44,24 @@
 					<integer>7</integer>
 				</dict>
 			</dict>
-			<key>第一章 头盔中的元素世界.md</key>
+			<key>第一章 头盔.md</key>
 			<dict>
 				<key>lastModification</key>
-				<real>558757523.38145101</real>
+				<real>558934497.47962403</real>
 				<key>version</key>
 				<dict>
 					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>30</integer>
+					<integer>38</integer>
+				</dict>
+			</dict>
+			<key>第二章 礼物.md</key>
+			<dict>
+				<key>lastModification</key>
+				<real>558935790.40454102</real>
+				<key>version</key>
+				<dict>
+					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
+					<integer>40</integer>
 				</dict>
 			</dict>
 			<key>陷阱.md</key>
@@ -77,7 +87,10 @@
 			<string>序章 未知飞行器.md</string>
 		</array>
 		<array>
-			<string>第一章 头盔中的元素世界.md</string>
+			<string>第一章 头盔.md</string>
+		</array>
+		<array>
+			<string>第二章 礼物.md</string>
 		</array>
 		<array>
 			<string>游戏世界设定.md</string>
@@ -105,7 +118,7 @@
 		<key>sheetClusters</key>
 		<dict>
 			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-			<integer>31</integer>
+			<integer>41</integer>
 		</dict>
 		<key>userIconName</key>
 		<dict>

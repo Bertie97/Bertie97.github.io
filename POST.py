@@ -663,8 +663,12 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         try:
             ind = md.rindex('\n', 0, i)
         except ValueError: ind = 0
-        if md[ind:i].strip().startswith('#') or md[ind:i].strip().startswith('-')\
-            or isint(md[ind:i].strip().split('.')[0]):
+        if md[ind:i].strip().startswith('#') or \
+            md[ind:i].strip().startswith('-') or \
+            isint(md[ind:i].strip().split('.')[0]) or \
+            md[i+1:].lstrip().startswith('#') or \
+            md[i+1:].lstrip().startswith('-') or \
+            isint(md[i+1:].lstrip().split('.')[0]):
             md = md[:i] + '\n' + md[i:]; continue
         md = md[:i] + '<br>' + md[i+1:]
     html += '''
