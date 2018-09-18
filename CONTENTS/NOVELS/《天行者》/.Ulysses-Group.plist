@@ -14,20 +14,6 @@
 		<real>554645401.978351</real>
 		<key>sheetClusters</key>
 		<dict>
-			<key>Untitled.md</key>
-			<dict>
-				<key>explicitUnassignment</key>
-				<true/>
-				<key>firstUnassignment</key>
-				<real>557677797.21380401</real>
-				<key>lastModification</key>
-				<real>557677797.21380401</real>
-				<key>version</key>
-				<dict>
-					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>29</integer>
-				</dict>
-			</dict>
 			<key>序章 未知飞行器.md</key>
 			<dict>
 				<key>lastModification</key>
@@ -58,14 +44,14 @@
 					<integer>7</integer>
 				</dict>
 			</dict>
-			<key>第一章 元素世界.md</key>
+			<key>第一章 头盔中的元素世界.md</key>
 			<dict>
 				<key>lastModification</key>
-				<real>557291857.79461396</real>
+				<real>558757523.38145101</real>
 				<key>version</key>
 				<dict>
 					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>25</integer>
+					<integer>30</integer>
 				</dict>
 			</dict>
 			<key>陷阱.md</key>
@@ -80,7 +66,7 @@
 			</dict>
 		</dict>
 		<key>userIconName</key>
-		<real>554645391.54379499</real>
+		<real>558720510.19956303</real>
 	</dict>
 	<key>sheetClusters</key>
 	<array>
@@ -91,13 +77,10 @@
 			<string>序章 未知飞行器.md</string>
 		</array>
 		<array>
-			<string>第一章 元素世界.md</string>
+			<string>第一章 头盔中的元素世界.md</string>
 		</array>
 		<array>
 			<string>游戏世界设定.md</string>
-		</array>
-		<array>
-			<string>Untitled.md</string>
 		</array>
 		<array>
 			<string>破阵.md</string>
@@ -106,7 +89,7 @@
 	<key>storeFormatVersion</key>
 	<integer>1</integer>
 	<key>userIconName</key>
-	<string>Theater</string>
+	<string>Hiking</string>
 	<key>versioning</key>
 	<dict>
 		<key>childOrder</key>
@@ -122,12 +105,12 @@
 		<key>sheetClusters</key>
 		<dict>
 			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-			<integer>29</integer>
+			<integer>31</integer>
 		</dict>
 		<key>userIconName</key>
 		<dict>
 			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-			<integer>23</integer>
+			<integer>38</integer>
 		</dict>
 	</dict>
 </dict>
