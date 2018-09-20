@@ -48,6 +48,7 @@ a {
 }
 
 #goToTop {
+    left: 50%;
     height: 2rem;
     position: fixed;
     bottom: 4rem;
@@ -137,19 +138,19 @@ ul.pagination li a:hover {
 }
 
 #navitem::-webkit-scrollbar {
-    display:none
+    display:none;
 }
 
 #navitem.scroll_content{
     -ms-scroll-chaining: chained;
     -ms-content-zooming: zoom;
     -ms-scroll-rails: none;
-    -ms-content-zoom-limit-min: 100%;
-    -ms-content-zoom-limit-max: 500%;
+    /* -ms-content-zoom-limit-min: 100%;
+    -ms-content-zoom-limit-max: 500%; */
     -ms-scroll-snap-type: proximity;
-    -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+    /* -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%); */
     -ms-overflow-style: none;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 #navitem.scroll_content .-o-scrollbar{

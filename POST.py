@@ -771,7 +771,7 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         </center>
         '''
     html += '\t</div>\n'
-    html += '<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>\n'
+    html += '<img src="../img/arrowUP.png" id="goToTop" name="goToTop"/>\n'
     html += '''
     <div id="nav">
         <ul class="pagination">
