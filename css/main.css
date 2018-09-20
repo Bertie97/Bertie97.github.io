@@ -254,25 +254,10 @@ ul.pagination li a:hover:not(.active) {
     border-radius: 0.4rem;
     overflow: scroll;
     box-shadow: inset 1px 1px 2px #AAA;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 
 .codehilite pre::-webkit-scrollbar {
     display:none;
-}
-
-.codehilite pre.scroll_content{
-    -ms-scroll-chaining: chained;
-    -ms-content-zooming: zoom;
-    -ms-scroll-rails: none;
-    /* -ms-content-zoom-limit-min: 100%;
-    -ms-content-zoom-limit-max: 500%; */
-    -ms-scroll-snap-type: proximity;
-    /* -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%); */
-    -ms-overflow-style: none;
-    /* overflow: auto; */
-}
-
-.codehilite pre.scroll_content .-o-scrollbar{
-    -moz-appearance: none !important;
-    background: rgba(0,255,0,0) !important;
 }

@@ -134,26 +134,27 @@ ul.pagination li a:hover {
     text-align: left;
     font-size: 0.8rem;
     overflow: scroll;
-
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
 }
 
 #navitem::-webkit-scrollbar {
     display:none;
 }
 
-#navitem.scroll_content{
+/* #navitem.scroll_content{
     -ms-scroll-chaining: chained;
     -ms-content-zooming: zoom;
     -ms-scroll-rails: none;
     /* -ms-content-zoom-limit-min: 100%;
     -ms-content-zoom-limit-max: 500%; */
-    -ms-scroll-snap-type: proximity;
+    /* -ms-scroll-snap-type: proximity; */
     /* -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%); */
-    -ms-overflow-style: none;
+    /* -ms-overflow-style: none; */
     /* overflow: auto; */
-}
+/* }
 
 #navitem.scroll_content .-o-scrollbar{
     -moz-appearance: none !important;
     background: rgba(0,255,0,0) !important;
-}
+} */
