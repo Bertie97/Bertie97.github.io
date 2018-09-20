@@ -5,7 +5,6 @@ import os, re, sys
 import shutil, time
 import markdown
 import datetime as dt
-import tkinter as tk
 import numpy as np
 from PIL import Image
 
@@ -63,8 +62,10 @@ for file in os.listdir(Dabout):
             intro = fp.read()
         continue
     if extension != 'md': continue
-    tag = ''
+    tag = ''; hidden = False; hiddenTight = False
     if '-' in name: tag = name.split('-')[0]; name = name[name.index('-')+1:]
+    if tag.startswith('##'): tag = tag.lstrip('#'); hiddenTight = True; hidden = True
+    if tag.startswith('#'): tag = tag.lstrip('#'); hidden = True
     with open(os.path.join(Dabout, file)) as fp:
         content = fp.read()
     info = []
@@ -90,7 +91,8 @@ for file in os.listdir(Dabout):
             continue
         info.append(line)
     sections.append({'foldername': fname, 'name': name, 'icon': icon, 'title':title,
-                     'tag': tag, 'text': '\n'.join(info), 'theme': theme})
+                     'tag': tag, 'text': '\n'.join(info), 'theme': theme,
+                     'hidden':hidden, 'hiddentight': hiddenTight})
 sections = sorted(sections, key=lambda x: x['tag'])
 themes = {sec['foldername']: sec['theme'] for sec in sections}
 
@@ -152,6 +154,7 @@ header = '''
                 </td>
 '''
 for sec in sections:
+    if sec['hidden']: continue
     header += '''<td style="border: none; padding: 0;">
                      <a class="navitem" href="./{name}.html">{name}</a>
                  </td>'''.format(name=sec['name'])
@@ -203,11 +206,12 @@ html += '''
         <tr>
 '''
 about = ''
+frontpageabout = ''
 for sec in sections:
-    about += '''
-            <td width="{per}%">
+    item = '''
+            <td width="{per}%" style="vertical-align: super;">
                 <a class="navitem" href="{name}.html">
-                    <div class="block" style="height:{height}px">
+                    <div class="block">
                         <center>
                             <img class="round" src="{icon}"/>
                             <h4 style="margin:0">{name}</h4>
@@ -216,10 +220,12 @@ for sec in sections:
                     </div>
                 </a>
             </td>
-    '''.format(height=tk.Tk().winfo_screenheight() * 2 // 3, per=100 // len(sections),
-               name=sec['name'], content=sec['text'], icon=getlite(sec['icon']))
+    '''.format(per=100 // len(sections), name=sec['name'], content=sec['text'],
+               icon=getlite(sec['icon']))
+    if not sec['hidden']: frontpageabout += item
+    if not sec['hiddentight']: about += item
 
-html += about + '''
+html += frontpageabout + '''
         </tr>
     </table>
 </div>
@@ -239,7 +245,7 @@ html += '</body>\n</html>'
 with open('index.html', 'w') as fp: fp.write(html)
 
 # build about.html
-html = head(title=MYNAME+"的网页介绍", js=["js/main.js"], css=["css/about.css"])
+html = head(title=MYNAME+"的网页介绍", js=[], css=["css/about.css"])
 html += '<body>\n' + header
 html += '''
 <div width="100%">
@@ -448,7 +454,7 @@ def buildBLOG(sec):
                         {hr}
                         <div class="tableitem">
                             <img style="background-image: url('{icon}')" class="blogIcon"/>
-                            <h3>
+                            <h3 class="main">
                                 {title}
                                 <span id="timestamp">
                                     更新时间：{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
@@ -538,7 +544,7 @@ def buildBOOK(sec):
                     <div class='row'>
                         <a href="{href}">
                             <img style="background-image: url('{icon}')" class="blogIcon"/>
-                            <h3>
+                            <h3 class="main">
                                 {title}
                                 <span id="timestamp">
                                     更新时间：{Y:04d}年{M:02d}月{D:02d}日{h:02d}时{m:02d}分{s:02d}秒
@@ -586,7 +592,7 @@ def buildBOOK(sec):
                 <a href="javascript:void(0)" style="text-decoration:none"><p id="intro">{intro}</p></a>
             </div>
             <div class='pod'>
-                <center><h3>章节列表</h3></center>
+                <center><h3 class="main">章节列表</h3></center>
                 <table style="table-layout:fixed">
         '''.format(title=book['name'], icon=getlite(os.path.join(os.path.pardir, book['icon']), dir='pages'),
                    intro=book['intro'], newest=book['newest'], Y=Y, M=M, D=D, h=h, m=m, s=s)
@@ -612,7 +618,15 @@ def buildBOOK(sec):
 
 
 def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
-    html = head(title=item['title'], css=['../css/blog.css'], js=['../' + jquery, '../js/blog.js'])
+    html = head(title=item['title'], css=['../css/blog.css', '../css/code-fence.css'],
+                js=['../' + jquery, '../js/blog.js'], other='''
+                <script type="text/x-mathjax-config">
+                  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+                </script>
+                <script type="text/javascript" async
+                  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+                </script>
+                ''')
     # html += '<body>\n' + header.replace('./', '../')
     shiftable = prevurl or nexturl or prturl
     html += '<body' + (' onkeydown="return onKey(event)"' if shiftable else '') + '>\n'
@@ -634,9 +648,33 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
     html += header.replace('./', '../')
     html += '\t<div style="width:40rem; margin:2rem auto; padding:6rem;\
     box-shadow: 2px 2px 4px #888; border-radius:0.4rem;" id="page">\n'
+    # 目录：获取目录
+    TOC = []; inblock = False
+    lines = item['content'].split('\n')
+    for line in lines:
+        line = line.strip()
+        if line.startswith('```'): inblock = not inblock
+        if inblock: continue
+        if not line.startswith('#'): continue
+        sharps = [c == '#' for c in line]
+        if False in sharps: beg = sharps.index(False)
+        else: beg = len(line)
+        topic = line.strip(' #')
+        if not topic.startswith('!['): TOC.append((beg - 1, topic))
+    order = sorted(list(set(r for r, t in TOC)))
+    for i, c in enumerate(order):
+        tmp = []
+        for r, t in TOC:
+            if r == c: tmp.append((i, t))
+            else: tmp.append((r, t))
+        TOC = tmp
+    contents = []
+    for rank, topic in TOC:
+        contents.append((topic, '&nbsp;&nbsp;' * rank + topic))
     change = []
     tmp = item['content']
     start = 0
+    # 图像：替换相对路径、删除标有#的图片
     while True:
         res = re.search(r'!\[[^\[\]]*\]\(', tmp)
         if res == None: break
@@ -656,6 +694,8 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         start += rindx
     md = item['content']
     for l, r, s in change[::-1]: md = md[:l] + s + md[r:]
+    # 换行：替换单换行
+    inblock = False
     for i in range(len(md)-1, 0, -1):
         if md[i] != '\n': continue
         if md[i-1] == '\n': continue
@@ -663,12 +703,13 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         try:
             ind = md.rindex('\n', 0, i)
         except ValueError: ind = 0
-        if md[ind:i].strip().startswith('#') or \
-            md[ind:i].strip().startswith('-') or \
-            isint(md[ind:i].strip().split('.')[0]) or \
-            md[i+1:].lstrip().startswith('#') or \
-            md[i+1:].lstrip().startswith('-') or \
-            isint(md[i+1:].lstrip().split('.')[0]):
+        if md[ind:i].lstrip().startswith('>') or \
+            md[i+1:].lstrip().startswith('```') or inblock:
+            if md[i+1:].lstrip().startswith('```'): inblock = True
+            if inblock and md[ind:i].lstrip().startswith('```'): inblock = False
+            continue
+        if md[ind:i].lstrip().startswith('#') or \
+            md[i+1:].lstrip().startswith('#'):
             md = md[:i] + '\n' + md[i:]; continue
         md = md[:i] + '<br>' + md[i+1:]
     html += '''
@@ -676,7 +717,44 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         <li><a href="''' + parenturl + '''" id="back">↩</a></li>
     </ul>
     '''
-    html += markdown.markdown(md)
+    mdhtml = markdown.markdown(md, ['extra', 'codehilite'])
+    # 列表：增加段落标签
+    p = -1; addp = []
+    while True:
+        p = mdhtml.find('<li>', p + 1)
+        if p < 0: break
+        a = mdhtml.find('<p>', p)
+        b = mdhtml.find('</li>', p)
+        if a > b or a < 0: addp.append(p + 4)
+    for i in addp[::-1]: mdhtml = mdhtml[:i] + '<p>' + mdhtml[i:]
+    p = len(mdhtml) + 1; addp = []
+    while True:
+        p = mdhtml.rfind('</li>', 0, p - 1)
+        if p < 0: break
+        a = mdhtml.rfind('</p>', 0, p)
+        b = mdhtml.rfind('<li>', 0, p)
+        if a < b or a < 0: addp.append(p)
+    for i in addp[::-1]: mdhtml = mdhtml[:i] + '</p>' + mdhtml[i:]
+    # mdhtml = mdhtml.replace('<li>', '<li><p>')
+    # mdhtml = mdhtml.replace('</li>', '</p></li>')
+    # 脚注：替换脚注格式
+    res = re.findall(r'<a href="[^"]+">\^[^<>\^]+</a>', mdhtml)
+    for link in res:
+        explanation = re.findall(r'<a href="([^"]+)">\^[^<>\^]+</a>', link)[0]
+        mark = re.findall(r'<a href="[^"]+">\^([^<>\^]+)</a>', link)[0]
+        sub = link.replace('^' + mark, '<sup>' + mark + '</sup>')
+        sub = sub.replace(explanation, 'javascript:alert(\'' + explanation + '\');')
+        _, r = re.search(r'<a href="[^"]+"', sub).span()
+        sub = sub[:r] + ' style="color:dodgerblue; font-weight:bold; margin:0.1rem"' + sub[r:]
+        mdhtml = mdhtml.replace(link, sub)
+    # 标题：增加标题链接
+    res = re.findall(r'<h[1-6]>[^<>]+</h[1-6]>', mdhtml)
+    for title in res:
+        con = re.findall(r'<h[1-6]>([^<>]+)</h[1-6]>', title)[0]
+        _, r = re.search(r'<h[1-6]', title).span()
+        sub = title[:r] + ' id="' + con + '"' + title[r:]
+        mdhtml = mdhtml.replace(title, sub)
+    html += mdhtml
     if shiftable:
         html += '''
         <center>
@@ -694,6 +772,17 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         '''
     html += '\t</div>\n'
     html += '<center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>\n'
+    html += '''
+    <div id="nav">
+        <ul class="pagination">
+    '''
+    for title, line in contents:
+        html += '\t\t\t<li><a href="#{title}" id="back">'.format(title=title) + \
+                '<div id="navitem"><pre>{line}</pre></div></a></li>'.format(line=line)
+    html += '''
+        </ul>
+    </div>
+    '''
     html += footer + '</body>\n</html>'
     if not os.path.exists('pages') or not os.path.isdir('pages'): os.mkdir('pages')
     with open(os.path.join('pages', pagename(item)), 'w') as fp: fp.write(html)
@@ -712,7 +801,6 @@ def chinese2digits(uchars_chinese):
                 total = total + val
             else:
                 r = r * val
-                # total =total + r * x
         elif val >= 10:
             if val > r:
                 r = val

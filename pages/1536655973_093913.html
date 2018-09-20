@@ -7,7 +7,15 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../js/blog.js"></script>
 <link type="text/css" rel="stylesheet" href="../css/blog.css"/>
-</head>
+<link type="text/css" rel="stylesheet" href="../css/code-fence.css"/>
+
+                <script type="text/x-mathjax-config">
+                  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\(','\)']]}});
+                </script>
+                <script type="text/javascript" async
+                  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+                </script>
+                </head>
 <body onkeydown="return onKey(event)">
 
         <script type="text/javascript">
@@ -31,13 +39,11 @@
                     <a class="navitem" href="../index.html">首页</a>
                 </td>
 <td style="border: none; padding: 0;">
+                     <a class="navitem" href="../学习.html">学习</a>
+                 </td><td style="border: none; padding: 0;">
                      <a class="navitem" href="../程序.html">程序</a>
                  </td><td style="border: none; padding: 0;">
                      <a class="navitem" href="../摄影.html">摄影</a>
-                 </td><td style="border: none; padding: 0;">
-                     <a class="navitem" href="../食谱.html">食谱</a>
-                 </td><td style="border: none; padding: 0;">
-                     <a class="navitem" href="../小说.html">小说</a>
                  </td>
                 <td style="border: none; padding: 0;">
                     <a class="navitem" href="../about.html">关于</a>
@@ -63,9 +69,9 @@
     <ul class="pagination">
         <li><a href="../食谱.html" id="back">↩</a></li>
     </ul>
-    <h1>青椒炒牛柳</h1>
+    <h1 id="青椒炒牛柳">青椒炒牛柳</h1>
 <p><center><img alt="COVER" src="../CONTENTS/RECIPES/DSC_0002_lite.jpg" /></center></p>
-<h2>材料：</h2>
+<h2 id="材料：">材料：</h2>
         <center>
             <ul class="pagination">
         <li><a id="prev" style="color:white">«</a></li>
@@ -76,5 +82,11 @@
         </center>
         	</div>
 <center><img src="../img/arrowUP.png" id="goToTop" name="goToTop"/></center>
-<div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div></body>
+
+    <div id="nav">
+        <ul class="pagination">
+    			<li><a href="#青椒炒牛柳" id="back"><div id="navitem"><pre>青椒炒牛柳</pre></div></a></li>			<li><a href="#材料：" id="back"><div id="navitem"><pre>&nbsp;&nbsp;材料：</pre></div></a></li>
+        </ul>
+    </div>
+    <div id="footer"><a href="https://github.com/Bertie97/Bertie97.github.io" style="text-decoration:none; color:white">© BFG Bertie 2018</a></div></body>
 </html>

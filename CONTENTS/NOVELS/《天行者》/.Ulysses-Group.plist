@@ -26,22 +26,30 @@
 			</dict>
 			<key>游戏世界设定.md</key>
 			<dict>
+				<key>explicitUnassignment</key>
+				<true/>
+				<key>firstUnassignment</key>
+				<real>559130667.98538601</real>
 				<key>lastModification</key>
-				<real>554972998.44361806</real>
+				<real>559130667.98538601</real>
 				<key>version</key>
 				<dict>
 					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>21</integer>
+					<integer>42</integer>
 				</dict>
 			</dict>
 			<key>破阵.md</key>
 			<dict>
+				<key>explicitUnassignment</key>
+				<true/>
+				<key>firstUnassignment</key>
+				<real>559130672.25055897</real>
 				<key>lastModification</key>
-				<real>535992478.98265499</real>
+				<real>559130672.25055897</real>
 				<key>version</key>
 				<dict>
 					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>7</integer>
+					<integer>43</integer>
 				</dict>
 			</dict>
 			<key>第一章 头盔.md</key>
@@ -66,12 +74,16 @@
 			</dict>
 			<key>陷阱.md</key>
 			<dict>
+				<key>explicitUnassignment</key>
+				<true/>
+				<key>firstUnassignment</key>
+				<real>559130674.45542705</real>
 				<key>lastModification</key>
-				<real>535954090.41664302</real>
+				<real>559130674.45542705</real>
 				<key>version</key>
 				<dict>
 					<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-					<integer>3</integer>
+					<integer>44</integer>
 				</dict>
 			</dict>
 		</dict>
@@ -118,7 +130,7 @@
 		<key>sheetClusters</key>
 		<dict>
 			<key>199a9527ea0be16f1ddd2a0da65bac753b84daf077b9c8682bdb8012a1efe413</key>
-			<integer>41</integer>
+			<integer>44</integer>
 		</dict>
 		<key>userIconName</key>
 		<dict>

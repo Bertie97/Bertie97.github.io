@@ -143,8 +143,7 @@ table {
     padding: 5%;
     margin: 5%;
     width: 80%;
-    height: 10rem;
-    /* border: solid 1px #888; */
+    height: auto;
     border-radius: 10px;
     box-shadow: 2px 2px 4px #AAA;
 }
@@ -247,4 +246,12 @@ ul.pagination li a:hover:not(.active) {
     left:50%;
     margin-left:29rem;
     margin-top:-1rem;
+}
+
+.codehilite pre {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    overflow: scroll;
+    box-shadow: inset 1px 1px 2px #AAA;
 }

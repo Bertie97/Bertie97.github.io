@@ -10,11 +10,11 @@ hr {
     width: 100%;
 }
 
-h2 {
+h2.main {
     color: cornflowerblue;
 }
 
-h3 {
+h3.main {
     margin: 0.4rem;
     height: 1rem;
     line-height: 1.2rem;
@@ -118,4 +118,24 @@ ul.pagination li a.active {
 
 ul.pagination li a:hover {
     background-color: #ddd;
+}
+
+#nav {
+    top: 6rem;
+    left: 50%;
+    position: fixed;
+    margin-left: -35rem;
+    max-width: 8rem;
+}
+
+#navitem {
+    width: 6rem;
+    text-align: left;
+    font-size: 0.8rem;
+    overflow: scroll;
+
+}
+
+#navitem::-webkit-scrollbar {
+    display:none
 }

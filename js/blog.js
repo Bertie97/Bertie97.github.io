@@ -16,6 +16,17 @@ $(function(){
         $('html, body').animate({scrollTop: 0}, 300);
         return false;
     })
+    $('.pagination a').click(function(){
+        var target = $($(this).attr('href')).offset();
+        $("html, body").animate({scrollTop:target.top - 90}, 300);
+        return;
+    })
+    // $('.filedownload').click(function(){
+    //     var dlForm = $("<form method='get'></form>");
+    //     dlForm.attr("action",$(this).attr('file'));
+    //     $(document.body).append(dlForm);
+    //     dlForm.submit();
+    // })
 })
 
 var currentPage = 1;//当前页数
