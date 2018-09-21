@@ -443,7 +443,7 @@ def buildBLOG(sec):
         buildMDPage(item, os.path.join(os.path.pardir, sec['name'] + '.html'), Dblogs,
                     prevurl=pagename(items[i-1] if i > 0 else None),
                     nexturl=pagename(items[i+1] if i < len(items) - 1 else None),
-                    prturl=sec['name'] + '.html')
+                    prturl=os.path.join(os.path.pardir, sec['name'] + '.html'))
         info = time.localtime(item['timestamp'])
         Y, M, D = info.tm_year, info.tm_mon, info.tm_mday
         h, m, s = info.tm_hour, info.tm_min, info.tm_sec
