@@ -21,6 +21,12 @@ $(function(){
         $("html, body").animate({scrollTop:target.top - 90}, 300);
         return;
     })
+    $('.codehilite pre').each(function(k, v){
+        if (v.offsetWidth < v.scrollWidth) {
+            $(v).attr('style', 'overflow-x:scroll');
+            // alert($(v).attr(''));
+        }
+    })
     // $('.filedownload').click(function(){
     //     var dlForm = $("<form method='get'></form>");
     //     dlForm.attr("action",$(this).attr('file'));

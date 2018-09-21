@@ -73,6 +73,7 @@ p#intro {
     line-height: 0.9rem;
     color: #666;
     overflow: hidden;
+    text-overflow: ellipsis;
     width: 32rem;
 }
 
@@ -122,7 +123,7 @@ ul.pagination li a:hover {
 }
 
 #nav {
-    top: 6rem;
+    top: 7rem;
     left: 50%;
     position: fixed;
     margin-left: -35rem;
