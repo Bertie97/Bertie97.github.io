@@ -1,13 +1,11 @@
 
 $(function() {
-    var playing = false;
     var video = $('#video');
     $('#playpause').hide();
     $('#choices').hide();
     $('.title').hide();
-    // $('.title').fadeIn('slow');
     video.click(function() {
-        if(playing) {
+        if(!video[0].paused) {
             video.trigger('pause');
             $('#playpause').html('||');
             $('#playpause').attr('style', 'padding-left: calc(0.2 * var(--radius));');
@@ -17,16 +15,15 @@ $(function() {
             $('#playpause').html('▶');
             $('#playpause').attr('style', 'padding-left: calc(0.3 * var(--radius));');
         }
-        playing = !playing;
         $('#playpause').fadeOut();
     });
-    video.click();
+    // video.click();
     setInterval(function() {
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
         }
         if(video[0].currentTime == video[0].duration) {
-            if(playing) {video.click();}
+            if(!video[0].paused) {video.click();}
             $('#choices').fadeIn();
         }
         wp = video[0].currentTime * 100 / video[0].duration
