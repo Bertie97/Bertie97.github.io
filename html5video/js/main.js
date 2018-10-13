@@ -20,7 +20,7 @@ $(function() {
     // video.click();
     var autostarted = false;
     setInterval(function() {
-        if(video[0].buffered.length > 0 && video[0].paused && !autostarted) {
+        if(video[0].buffered.length > 0 && !autostarted) {
             video.click();
             autostarted = true;
         }
