@@ -21,6 +21,7 @@ $(function() {
     var autostart = false;
     var autostarted = false;
     setInterval(function() {
+        console.log(video[0].readyState)
         if(autostart) {
             video.trigger('play');
             autostart = false;
