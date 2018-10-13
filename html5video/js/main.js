@@ -1,12 +1,10 @@
 
 $(function() {
-    var unclicked = true;
     var video = $('#video');
     $('#playpause').hide();
     $('#choices').hide();
     $('.title').hide();
     video.click(function() {
-        unclicked = false;
         if(!video[0].paused) {
             video.trigger('pause');
             $('#playpause').html('||');
@@ -21,7 +19,7 @@ $(function() {
     });
     // video.click();
     setInterval(function() {
-        if(video[0].buffered.length > 0 && unclicked) {
+        if(video[0].buffered.length > 0 && video[0].paused) {
             video.click();
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
