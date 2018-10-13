@@ -21,8 +21,8 @@ $(function() {
     var autostarted = false;
     setInterval(function() {
         if(!autostarted && video[0].readyState >= 4) {
-            video.trigger('play');
             autostarted = true;
+            video.delay(2000).trigger('play');
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
