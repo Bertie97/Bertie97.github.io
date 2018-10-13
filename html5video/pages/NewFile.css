@@ -41,6 +41,7 @@ a {
 #prog {
     height: 0.2rem;
     background: gray;
+    border-radius: 0.1rem;
 }
 
 #choices {

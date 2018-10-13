@@ -19,6 +19,7 @@ $(function() {
     });
     // video.click();
     setInterval(function() {
+        console.log(video[0].buffered)
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
         }
