@@ -1,0 +1,60 @@
+:root {
+    --pagewidth: 80rem;
+    --videoratio: 0.6;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#page {
+    position: fixed;
+    width: var(--pagewidth);
+    left: 50%;
+    margin-left: calc(-0.5 * var(--pagewidth));
+}
+
+#video {
+    width: var(--pagewidth);
+    /* height: calc(var(--videoratio) * var(--pagewidth)); */
+}
+
+#playpause {
+    --radius: 4rem;
+    position: fixed;
+    top: calc(0.5 * var(--videoratio) * var(--pagewidth));
+    left: 50%;
+    width: calc(2 * var(--radius));
+    height: calc(2 * var(--radius));
+    margin-top: calc(-1 * var(--radius));
+    margin-left: calc(-1 * var(--radius));
+    border-radius: var(--radius);
+    padding-left: calc(0.3 * var(--radius));
+    font-size: calc(0.8 * var(--radius));
+    background: none;
+    color: #AAA;
+    border: none;
+    opacity: 0.5;
+}
+
+#prog {
+    height: 0.2rem;
+    background: gray;
+}
+
+#choices {
+    position: fixed;
+    table-layout: fixed;
+    width: calc(0.8 * var(--pagewidth));
+    margin: 0 calc(0.1 * var(--pagewidth));
+    top: calc(0.5 * var(--pagewidth));
+}
+
+.choice {
+    background: white;
+    border-radius: 0.4rem;
+    padding: 1rem calc(0.05 * var(--pagewidth));
+    opacity: 0.5;
+    text-align: center;
+}
