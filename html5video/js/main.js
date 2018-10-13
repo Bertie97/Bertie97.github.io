@@ -18,16 +18,10 @@ $(function() {
         $('#playpause').fadeOut();
     });
     // video.click();
-    var autostart = false;
     var autostarted = false;
     setInterval(function() {
-        console.log(video[0].readyState)
-        if(autostart) {
+        if(!autostarted && video[0].readyState > 0) {
             video.trigger('play');
-            autostart = false;
-        }
-        if(video[0].buffered.length > 0 && !autostarted) {
-            autostart = true;
             autostarted = true;
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
