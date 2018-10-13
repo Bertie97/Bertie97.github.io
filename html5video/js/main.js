@@ -1,7 +1,8 @@
 
 $(function() {
-    var playing = false;
+    var playing = true;
     var video = $('#video');
+    $('#playpause').hide();
     $('#choices').hide();
     $('.title').hide();
     // $('.title').fadeIn('slow');
@@ -19,7 +20,7 @@ $(function() {
         playing = !playing;
         $('#playpause').fadeOut();
     });
-    video.click();
+    // video.click();
     setInterval(function() {
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
