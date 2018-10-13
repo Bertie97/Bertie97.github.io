@@ -18,9 +18,11 @@ $(function() {
         $('#playpause').fadeOut();
     });
     // video.click();
+    var autostarted = false;
     setInterval(function() {
-        if(video[0].buffered.length > 0 && video[0].paused) {
+        if(video[0].buffered.length > 0 && video[0].paused && !autostarted) {
             video.click();
+            autostarted = true;
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
