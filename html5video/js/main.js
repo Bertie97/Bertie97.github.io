@@ -18,10 +18,15 @@ $(function() {
         $('#playpause').fadeOut();
     });
     // video.click();
+    var autostart = false;
     var autostarted = false;
     setInterval(function() {
+        if(autostart) {
+            video.trigger('play');
+            autostart = false;
+        }
         if(video[0].buffered.length > 0 && !autostarted) {
-            video.click();
+            autostart = true;
             autostarted = true;
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
