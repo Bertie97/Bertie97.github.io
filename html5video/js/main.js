@@ -18,12 +18,11 @@ $(function() {
         $('#playpause').fadeOut();
     });
     // video.click();
-    // var autostarted = false;
+    var autostart = -1;
     setInterval(function() {
-        // if(!autostarted && video[0].readyState >= 4) {
-        //     autostarted = true;
-        //     if(video[0].play) {video[0].play();}
-        // }
+        if(autostart > 0) {autostart -= 1;}
+        if(autostart == 0) {video.trigger('play');}
+        if(autostart == -1 && video[0].readyState >= 4) {autostart = 5;}
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
         }
