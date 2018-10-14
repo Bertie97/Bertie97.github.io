@@ -1,7 +1,7 @@
 
 $(function() {
     var video = $('#video');
-    $('#playpause').hide();
+    // $('#playpause').hide();
     $('#choices').hide();
     $('.title').hide();
     video.click(function() {
@@ -18,11 +18,11 @@ $(function() {
         $('#playpause').fadeOut();
     });
     // video.click();
-    var autostart = -1;
+    // var autostart = -1;
     setInterval(function() {
-        if(autostart > 0) {autostart -= 1;}
-        if(autostart == 0) {video.trigger('play');}
-        if(autostart == -1 && video[0].readyState >= 4) {autostart = 5;}
+        // if(autostart > 0) {autostart -= 1;}
+        // if(autostart == 0) {video.trigger('play');}
+        // if(autostart == -1 && video[0].readyState >= 4) {autostart = 5;}
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
         }
