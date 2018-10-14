@@ -22,7 +22,7 @@ $(function() {
     setInterval(function() {
         if(!autostarted && video[0].readyState >= 4) {
             autostarted = true;
-            video.delay(2000).trigger('play');
+            if(video[0].play) {video[0].play();}
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
