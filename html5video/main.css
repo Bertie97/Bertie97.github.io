@@ -16,8 +16,16 @@ a {
 }
 
 #video {
+    position: relative;
+    top: 50%;
     width: var(--pagewidth);
     /* height: calc(var(--videoratio) * var(--pagewidth)); */
+}
+
+#videocrop {
+    width: var(--pagewidth);
+    height: calc(var(--videoratio) * var(--pagewidth));
+    overflow: hidden;
 }
 
 #playpause {
