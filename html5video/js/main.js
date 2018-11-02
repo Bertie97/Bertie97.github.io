@@ -22,7 +22,8 @@ $(function() {
     setInterval(function() {
         if(video[0].readyState >= 3 && !once) {
             once = true;
-            $('#video').attr('style', 'margin-top: -' + $('#video').height() / 2);
+            $('#video').attr('style', 'margin-top: ' + ($('#videocrop').height() - $('#video').height()) / 2);
+            // $('#prog').attr('style', 'margin-top: ' + $('#video').height() / 2);
         }
         if(video[0].currentTime > 2 && $('.title').is(':hidden')) {
             $('.title').fadeIn(2000);
