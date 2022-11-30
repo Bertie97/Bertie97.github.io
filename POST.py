@@ -717,7 +717,7 @@ def buildMDPage(item, parenturl, dir, prevurl='', nexturl='', prturl=''):
         <li><a href="''' + parenturl + '''" id="back">↩</a></li>
     </ul>
     '''
-    mdhtml = markdown.markdown(md, ['extra', 'codehilite'])
+    mdhtml = markdown.markdown(md, extensions=['extra', 'codehilite'])
     # 列表：增加段落标签
     p = -1; addp = []
     while True:
